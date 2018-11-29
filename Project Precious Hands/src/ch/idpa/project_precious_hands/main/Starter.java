@@ -5,6 +5,7 @@
  */
 package ch.idpa.project_precious_hands.main;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,14 +17,22 @@ import javafx.stage.Stage;
  *
  * @author chris
  */
-public class Starter extends Application{
+public class Starter extends Application {
+
+    private static Stage stage = null;
+    private static Parent root;
 
     @Override
     public void start(Stage stage) throws Exception {
-        Image icon = new Image("resources/Precious_Logo.png");
-        System.out.println(""+icon.toString());
-        Parent root = FXMLLoader.load(getClass().getResource("View/Login.fxml"));
+        this.stage = stage;
+        
+        changeScreen("view2", "MainView");
+    }
 
+    public void changeScreen(String pkg, String window) throws IOException {
+        Image icon = new Image("resources/Precious_Logo.png");
+        root = FXMLLoader.load(getClass().getResource(pkg + "/" + window + ".fxml"));
+        
         Scene scene = new Scene(root);
         
         stage.setTitle("Precious Hands");
@@ -31,12 +40,12 @@ public class Starter extends Application{
         stage.setScene(scene);
         stage.show();
     }
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
