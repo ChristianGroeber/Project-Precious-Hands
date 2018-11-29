@@ -138,21 +138,21 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void donationDetail(ActionEvent event) throws IOException {
-        settings.setDetailPage("Donation");
+        //settings.setDetailPage("Donation");
         loadWindow("DetailView");
     }
 
 
     @FXML
     private void childDetail(ActionEvent event) throws IOException {
-        settings.setDetailPage("Child");
+        //settings.setDetailPage("Child");
         loadWindow("DetailView");
     }
 
 
     @FXML
     private void donorDetail(ActionEvent event) throws IOException {
-        settings.setDetailPage("Donor");
+        //settings.setDetailPage("Donor");
         loadWindow("DetailView");
     }
 

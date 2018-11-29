@@ -49,7 +49,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label fx:id="lblDetailPage" text="Label" />
+                        <Label fx:id="lblDetailPage" text="Detail" />
                      </children>
                   </HBox>
                </children>

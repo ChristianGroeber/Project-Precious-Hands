@@ -53,7 +53,7 @@ public class DetailController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //menuBar = settings.getMenuBar();
         //this.newMenuBar = menuBar;
-        lblDetailPage.setText(settings.getDetailPage());
+        //lblDetailPage.setText(settings.getDetailPage());
     }    
 
     @FXML
