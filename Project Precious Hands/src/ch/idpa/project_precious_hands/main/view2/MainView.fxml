@@ -47,9 +47,9 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <TabPane prefHeight="610.0" prefWidth="824.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPane" prefHeight="610.0" prefWidth="824.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Manage Donations">
+                <Tab fx:id="tabDonations" text="Manage Donations">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -118,6 +118,7 @@
                                              <children>
                                                 <TableView fx:id="tblPayments" maxHeight="402.0" minHeight="200.0" prefHeight="333.0" prefWidth="382.0">
                                                    <columns>
+                                                      <TableColumn prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="colAmount" prefWidth="75.0" text="Amount" />
                                                       <TableColumn fx:id="colDonor" prefWidth="75.0" text="Donor" />
                                                       <TableColumn fx:id="colChild" prefWidth="75.0" text="Child" />
@@ -139,7 +140,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Manage Children">
+                <Tab fx:id="tabChildren" text="Manage Children">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -209,17 +210,18 @@
                                              <content>
                                                 <VBox>
                                                    <children>
-                                                      <TableView fx:id="leiterTbl1" prefHeight="511.0" prefWidth="312.0">
+                                                      <TableView fx:id="tblChildren" prefHeight="511.0" prefWidth="312.0">
                                                          <columns>
+                                                            <TableColumn prefWidth="75.0" text="ID" />
                                                             <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
                                                             <TableColumn fx:id="colLastName" prefWidth="75.0" text="Last Name" />
                                                             <TableColumn fx:id="colBirthday" prefWidth="75.0" text="Birthday" />
-                                                            <TableColumn prefWidth="75.0" text="Image" />
                                                          </columns>
                                                       </TableView>
                                                       <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                                          <buttons>
                                                             <Button mnemonicParsing="false" onAction="#childDetail" text="Detail" />
+                                                            <Button mnemonicParsing="false" onAction="#addDonationToChild" text="Add Donation" />
                                                          </buttons>
                                                       </ButtonBar>
                                                    </children>
@@ -234,7 +236,7 @@
                         </AnchorPane>
                      </content>
                 </Tab>
-                  <Tab text="Manage Donors">
+                  <Tab fx:id="tabDonors" text="Manage Donors">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -306,8 +308,9 @@
                                              <content>
                                                 <VBox>
                                                    <children>
-                                                      <TableView fx:id="leiterTbl11" prefHeight="511.0" prefWidth="312.0">
+                                                      <TableView fx:id="tblDonor" prefHeight="511.0" prefWidth="312.0">
                                                          <columns>
+                                                            <TableColumn prefWidth="75.0" text="ID" />
                                                             <TableColumn fx:id="colNameDonor" prefWidth="75.0" text="Name" />
                                                             <TableColumn fx:id="colLastNameDonor" prefWidth="75.0" text="Last Name" />
                                                          </columns>
@@ -315,6 +318,7 @@
                                                       <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                                          <buttons>
                                                             <Button mnemonicParsing="false" onAction="#donorDetail" text="Detail" />
+                                                            <Button mnemonicParsing="false" onAction="#addDonationToDonor" text="Add Donation" />
                                                          </buttons>
                                                       </ButtonBar>
                                                    </children>

@@ -5,6 +5,8 @@
  */
 package ch.idpa.project_precious_hands.main.controller2;
 
+import ch.idpa.project_precious_hands.main.Model.Child;
+import ch.idpa.project_precious_hands.main.Model.Donation;
 import ch.idpa.project_precious_hands.main.ScreenSwitcher;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.io.IOException;
@@ -21,6 +23,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -61,8 +66,6 @@ public class MainViewController implements Initializable {
     @FXML
     private ImageView imgChild;
     @FXML
-    private TableView<?> leiterTbl1;
-    @FXML
     private TableColumn<?, ?> colName;
     @FXML
     private TableColumn<?, ?> colLastName;
@@ -76,8 +79,6 @@ public class MainViewController implements Initializable {
     private TextField txtRoadDonor;
     @FXML
     private TextField txtPostalCodeDonor;
-    @FXML
-    private TableView<?> leiterTbl11;
     @FXML
     private DatePicker txtBirthdayChild;
     @FXML
@@ -96,6 +97,18 @@ public class MainViewController implements Initializable {
     private MenuBar menuBar;
     
     private static final Settings settings = Settings.getInstance();
+    @FXML
+    private TableView<?> tblDonor;
+    @FXML
+    private Tab tabDonations;
+    @FXML
+    private Tab tabChildren;
+    @FXML
+    private Tab tabDonors;
+    @FXML
+    private TableView<Child> tblChildren;
+    @FXML
+    private TabPane tabPane;
 
     /**
      * Initializes the controller class.
@@ -109,6 +122,8 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void newDonation(ActionEvent event) {
+        Donation donation = new Donation();
+        
     }
 
     @FXML
@@ -117,10 +132,12 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void chooseDonor(ActionEvent event) {
+        
     }
 
     @FXML
-    private void chooseChild(ActionEvent event) {
+    private void chooseChild(ActionEvent event) throws IOException {
+        loadWindow("DetailView", "Child");
     }
 
 
@@ -138,29 +155,41 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void donationDetail(ActionEvent event) throws IOException {
-        //settings.setDetailPage("Donation");
-        loadWindow("DetailView");
+        loadWindow("DetailView", "Donation Detail");
     }
 
 
     @FXML
     private void childDetail(ActionEvent event) throws IOException {
-        //settings.setDetailPage("Child");
-        loadWindow("DetailView");
+        loadWindow("DetailView", "Child Detail");
     }
 
 
     @FXML
     private void donorDetail(ActionEvent event) throws IOException {
-        //settings.setDetailPage("Donor");
-        loadWindow("DetailView");
+        loadWindow("DetailView", "Donor Detail");
     }
 
     
-    private void loadWindow(String window) throws IOException{
+    private void loadWindow(String window, String title) throws IOException{
         Starter start = new Starter();
-        start.changeScreen("view2", "DetailView");
+        start.changeScreen("view2", window, title);
 
+    }
+
+    @FXML
+    private void addDonationToChild(ActionEvent event) {
+        Child child = tblChildren.getSelectionModel().getSelectedItem();
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(0);
+        txtChildChooser.setText(child.getLastName());
+        Donation donation = new Donation();
+        donation.setToDonate(child);
+        System.out.println("child = " + child);
+    }
+
+    @FXML
+    private void addDonationToDonor(ActionEvent event) {
     }
     
 }

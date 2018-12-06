@@ -26,21 +26,31 @@ public class Starter extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        
-        changeScreen("view2", "MainView");
+
+        changeScreen("view2", "MainView", "Precious Hands");
     }
 
-    public void changeScreen(String pkg, String window) throws IOException {
+    public void changeScreen(String pkg, String window, String title) throws IOException {
         Image icon = new Image("resources/Precious_Logo.png");
-        root = FXMLLoader.load(getClass().getResource(pkg + "/" + window + ".fxml"));
-        
-        Scene scene = new Scene(root);
-        
+        Stage stage = this.stage;
+        Scene scene;
+        if (window.equals("DetaiView")) {
+            stage = new Stage();
+            scene = new Scene(FXMLLoader.load(getClass().getResource(pkg + "/DetailView.fxml")));
+        } else {
+            root = FXMLLoader.load(getClass().getResource(pkg + "/" + window + ".fxml"));
+            scene = new Scene(root);
+        }
+
         stage.setTitle("Precious Hands");
         stage.setResizable(false);
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
+    }
+    
+    public String getTitle(){
+        return stage.getTitle();
     }
 
     /**

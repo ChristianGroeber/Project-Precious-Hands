@@ -9,6 +9,6 @@ package ch.idpa.project_precious_hands.main.Model;
  *
  * @author chris
  */
-public class SelectedChild {
+public class Donor {
     
 }
