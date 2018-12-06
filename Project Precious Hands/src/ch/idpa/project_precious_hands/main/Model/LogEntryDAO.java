@@ -49,12 +49,22 @@ public class LogEntryDAO implements DAO<LogEntry>{
 
     @Override
     public boolean insert(LogEntry t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            logEntries.add(t);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public boolean delete(LogEntry t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            logEntries.remove(t);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
     
 }
