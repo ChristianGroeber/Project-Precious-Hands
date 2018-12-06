@@ -46,7 +46,6 @@ public class LogEntryDAO implements DAO<LogEntry>{
             return false;
         }
     }
-    }
 
     @Override
     public boolean insert(LogEntry t) {
