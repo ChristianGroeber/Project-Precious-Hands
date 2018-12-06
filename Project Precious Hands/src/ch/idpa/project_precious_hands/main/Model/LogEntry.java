@@ -18,6 +18,14 @@ public class LogEntry {
     public int DonorID;
     public Date EntryDate;
 
+    public LogEntry(int LogEntryID, int UserID, int RecieverID, int DonorID, Date EntryDate) {
+        this.LogEntryID = LogEntryID;
+        this.UserID = UserID;
+        this.RecieverID = RecieverID;
+        this.DonorID = DonorID;
+        this.EntryDate = EntryDate;
+    }
+
     public int getLogEntryID() {
         return LogEntryID;
     }
