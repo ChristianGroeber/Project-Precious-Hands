@@ -7,19 +7,13 @@ package ch.idpa.project_precious_hands.main.controller2;
 
 import ch.idpa.project_precious_hands.main.Model.Child;
 import ch.idpa.project_precious_hands.main.Model.Donation;
-import ch.idpa.project_precious_hands.main.ScreenSwitcher;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
@@ -30,7 +24,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class

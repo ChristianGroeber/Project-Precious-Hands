@@ -16,6 +16,20 @@ public class Child {
     private String lastName;
     private int id;
     private Date birthday;
+    
+    private static Child instance;
+
+    public Child() {
+        if(instance == null){
+            instance = new Child();
+        }
+    }
+    
+    public static Child getInstance(){
+        return instance;
+    }
+    
+    
 
     public Child(String name, String lastName, int id, Date birthday) {
         this.name = name;

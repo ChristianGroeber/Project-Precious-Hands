@@ -70,7 +70,7 @@ public class DetailController implements Initializable {
 
     @FXML
     private void backHome(MouseEvent event) throws IOException {
-        new Starter().changeScreen("view2", "MainView");
+        new Starter().changeScreen("view2", "MainView", "Precious Hands");
     }
     
 }

@@ -48,10 +48,12 @@ public class ChooserViewController implements Initializable {
 
     @FXML
     private void previous(ActionEvent event) {
+        //TODO connect to Database
     }
 
     @FXML
     private void next(ActionEvent event) {
+        //TODO connecto to Database
     }
 
 }
