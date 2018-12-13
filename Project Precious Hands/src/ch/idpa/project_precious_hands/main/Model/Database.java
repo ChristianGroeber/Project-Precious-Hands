@@ -72,18 +72,6 @@ public class Database {
         return result;
     }
     
-    public Table findSingleEntryById(String type, HashMap<String, String> arguments){
-        int id;
-        query = "Select * From '" + type + "' WHERE ";
-        if(arguments.containsKey("id")){
-            query += "ID" + type + "=" + arguments.get("id") + " ";
-        }
-        if(arguments.containsKey("name")){
-            query += "Name=" + arguments.get("name") + " ";
-        }
-        query = "SELECT ";
-    }
-    
     public void donate(Donor donor, Reciever reciever, double sum) throws SQLException{
         query = "UPDATE donor SET" + sum + "WHERE name = '" + donor.getName() +"' AND surname ='" + donor.getLastName() +"'";
         result = stmt.executeQuery(query);

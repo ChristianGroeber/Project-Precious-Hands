@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
  *
  * @author olive
  */
-public class Child extends Table{
+public class Child {
     private int childID;
     private String name;
     private String lastName;
@@ -38,13 +38,11 @@ public class Child extends Table{
     }
 
     
-    @Override
-    public int getID() {
+    public int getChildID() {
         return childID;
     }
 
-    @Override
-    public void setID(int childID) {
+    public void setChildID(int childID) {
         this.childID = childID;
     }
 
