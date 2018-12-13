@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 /**
  *
@@ -69,6 +70,18 @@ public class Database {
     public ResultSet getTable(String query) throws SQLException{
         result = stmt.executeQuery(query);
         return result;
+    }
+    
+    public Table findSingleEntryById(String type, HashMap<String, String> arguments){
+        int id;
+        query = "Select * From '" + type + "' WHERE ";
+        if(arguments.containsKey("id")){
+            query += "ID" + type + "=" + arguments.get("id") + " ";
+        }
+        if(arguments.containsKey("name")){
+            query += "Name=" + arguments.get("name") + " ";
+        }
+        query = "SELECT ";
     }
     
     public void donate(Donor donor, Reciever reciever, double sum) throws SQLException{
