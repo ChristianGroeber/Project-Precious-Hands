@@ -5,7 +5,11 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,23 +25,28 @@ public class Database {
     
     private static Database instance;
 
-    private String DB_URL = "den1.mysql3.gear.host";
+    private static String DB_URL = "den1.mysql3.gear.host";
     private static Connection connection;
     private static Statement stmt;
     private String query;
     private ResultSet result;
     private User activeUser;
-    private String username;
-    private String password;
+    private static String username;
+    private static String password;
 
     private Database() throws SQLException {
         
     }
     
-    public static Database getInstance() throws SQLException{
+    public static Database getInstance() throws SQLException, FileNotFoundException, IOException{
         if(instance == null){
-            File data = new File("../");
-            connection = DriverManager.getConnection("den1.mysql3.gear.host", "", "");
+            File data = new File("password.txt");
+            FileReader reader = new FileReader(data);
+            BufferedReader br = new BufferedReader(reader);
+            username = br.readLine();
+            password = br.readLine();
+            br.close();
+            connection = DriverManager.getConnection(DB_URL, "", "");
             stmt = connection.createStatement();
             instance = new Database();
             return instance;
