@@ -7,7 +7,12 @@ package ch.idpa.project_precious_hands.main.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -16,6 +21,13 @@ import javafx.fxml.Initializable;
  */
 public class LoginController implements Initializable {
 
+    @FXML
+    private TextField lblUsername;
+    @FXML
+    private PasswordField lblPassword;
+    @FXML
+    private Button btnLogin;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +35,9 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void doLogin(ActionEvent event) {
+    }
     
 }

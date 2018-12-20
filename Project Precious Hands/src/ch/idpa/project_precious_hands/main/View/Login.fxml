@@ -8,15 +8,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="ch.idpa.project_precious_hands.main.Controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.idpa.project_precious_hands.main.Controller.LoginController">
     <stylesheets>
         <URL value="@login.css" />
     </stylesheets>
    <children>
-      <ImageView fitHeight="128.0" fitWidth="182.0" layoutX="27.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" />
-      <TextField layoutX="209.0" layoutY="200.0" />
-      <PasswordField layoutX="209.0" layoutY="251.0" />
-      <Button layoutX="381.0" layoutY="304.0" mnemonicParsing="false" text="Login" />
+      <ImageView fitHeight="128.0" fitWidth="182.0" layoutX="27.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="lblUsername" layoutX="209.0" layoutY="200.0" />
+      <PasswordField fx:id="lblPassword" layoutX="209.0" layoutY="251.0" />
+      <Button fx:id="btnLogin" layoutX="381.0" layoutY="304.0" mnemonicParsing="false" onAction="#doLogin" text="Login" />
       <Label layoutX="209.0" layoutY="183.0" text="Username: " />
       <Label layoutX="209.0" layoutY="234.0" text="Password:" />
    </children>

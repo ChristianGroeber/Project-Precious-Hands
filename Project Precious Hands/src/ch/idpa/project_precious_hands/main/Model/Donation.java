@@ -9,58 +9,62 @@ import java.util.Date;
 
 /**
  *
- * @author chris
+ * @author olive
  */
 public class Donation {
-    private Child toDonate;
-    private Donor donor;
-    private double amount;
-    private Date dateCreated;
+    private int donationID;
+    private int donorID;
+    private int recieverID;
+    private int amount;
+    private Date receptionDate;
 
-    public Donation(Child toDonate, Donor donor, double amount) {
-        this.toDonate = toDonate;
-        this.donor = donor;
+    public Donation(int donationID, int donorID, int recieverID, int amount, Date receptionDate) {
+        this.donationID = donationID;
+        this.donorID = donorID;
+        this.recieverID = recieverID;
         this.amount = amount;
-    }
-
-    public Donation() {
+        this.receptionDate = receptionDate;
     }
     
-    
-
-    public Child getToDonate() {
-        return toDonate;
+    public int getDonationID() {
+        return donationID;
     }
 
-    public void setToDonate(Child toDonate) {
-        this.toDonate = toDonate;
+    public void setDonationID(int donationID) {
+        this.donationID = donationID;
     }
 
-    public Donor getDonor() {
-        return donor;
+    public int getDonorID() {
+        return donorID;
     }
 
-    public void setDonor(Donor donor) {
-        this.donor = donor;
+    public void setDonorID(int donorID) {
+        this.donorID = donorID;
     }
 
-    public double getAmount() {
+    public int getRecieverID() {
+        return recieverID;
+    }
+
+    public void setRecieverID(int recieverID) {
+        this.recieverID = recieverID;
+    }
+
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    public Date getDateCreated() {
-        return dateCreated;
+    public Date getReceptionDate() {
+        return receptionDate;
     }
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setReceptionDate(Date receptionDate) {
+        this.receptionDate = receptionDate;
     }
-    
-    
     
     
 }
