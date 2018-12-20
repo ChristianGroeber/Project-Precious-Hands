@@ -6,36 +6,44 @@
 package ch.idpa.project_precious_hands.main.Model;
 
 import java.util.Date;
+import javafx.scene.image.Image;
 
 /**
  *
- * @author chris
+ * @author olive
  */
 public class Child {
+    private int childID;
     private String name;
     private String lastName;
-    private int id;
+    private char gender;
     private Date birthday;
-    
-    private static Child instance;
+    private Image image;
 
-    public Child() {
-        if(instance == null){
-            instance = new Child();
-        }
-    }
-    
-    public static Child getInstance(){
-        return instance;
-    }
-    
-    
-
-    public Child(String name, String lastName, int id, Date birthday) {
+    public Child(int childID, String name, String lastName, char gender, Date birthday, Image image) {
+        this.childID = childID;
         this.name = name;
         this.lastName = lastName;
-        this.id = id;
+        this.gender = gender;
         this.birthday = birthday;
+        this.image = image;
+    }
+
+    public Child(int childID, String name, String lastName, char gender, Date birthday) {
+        this.childID = childID;
+        this.name = name;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthday = birthday;
+    }
+
+    
+    public int getChildID() {
+        return childID;
+    }
+
+    public void setChildID(int childID) {
+        this.childID = childID;
     }
 
     public String getName() {
@@ -54,12 +62,12 @@ public class Child {
         this.lastName = lastName;
     }
 
-    public int getId() {
-        return id;
+    public char getGender() {
+        return gender;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setGender(char gender) {
+        this.gender = gender;
     }
 
     public Date getBirthday() {
@@ -69,6 +77,16 @@ public class Child {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+    
+    
     
     
 }

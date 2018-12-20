@@ -7,18 +7,37 @@ package ch.idpa.project_precious_hands.main.Model;
 
 /**
  *
- * @author chris
+ * @author olive
  */
 public class Donor {
+    private int donorID;
     private String name;
     private String lastName;
-    private int id;
-    private static Donor instance;
-    
-    public Donor(){
-        if(instance == null){
-            instance = new Donor();
-        }
+    private String street;
+    private String postalCode;
+    private String city;
+    private String email;
+    private String phone;
+    private int donationPlanID;
+
+    public Donor(int donorID, String name, String lastName, String street, String postalCode, String city, String email, String phone, int donationPlanID) {
+        this.donorID = donorID;
+        this.name = name;
+        this.lastName = lastName;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.email = email;
+        this.phone = phone;
+        this.donationPlanID = donationPlanID;
+    }
+
+    public int getDonorID() {
+        return donorID;
+    }
+
+    public void setDonorID(int donorID) {
+        this.donorID = donorID;
     }
 
     public String getName() {
@@ -37,17 +56,52 @@ public class Donor {
         this.lastName = lastName;
     }
 
-    public int getId() {
-        return id;
+    public String getStreet() {
+        return street;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public static Donor getInstance() {
-        return instance;
+    public String getPostalCode() {
+        return postalCode;
     }
-    
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getDonationPlanID() {
+        return donationPlanID;
+    }
+
+    public void setDonationPlanID(int donationPlanID) {
+        this.donationPlanID = donationPlanID;
+    }
     
 }
