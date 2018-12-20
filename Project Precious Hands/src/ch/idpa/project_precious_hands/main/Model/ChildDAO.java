@@ -5,6 +5,7 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 public class ChildDAO implements DAO<Child>{
     private List<Child> children = new ArrayList<>();
 
-    public ChildDAO() throws SQLException {
+    public ChildDAO() throws SQLException, FileNotFoundException {
         /*        Database.getInstance().openConnection("preciousdb", "Os1t~T6E!5wi");
         ResultSet rs = Database.getInstance().getTable("SELECT * FROM child;");
         for (Object r : rs) {
