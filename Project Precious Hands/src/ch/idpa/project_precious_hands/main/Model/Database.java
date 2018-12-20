@@ -5,6 +5,7 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,6 +27,8 @@ public class Database {
     private String query;
     private ResultSet result;
     private User activeUser;
+    private String username;
+    private String password;
 
     private Database() throws SQLException {
         
@@ -33,7 +36,8 @@ public class Database {
     
     public static Database getInstance() throws SQLException{
         if(instance == null){
-            connection = DriverManager.getConnection("", "", "");
+            File data = new File("../");
+            connection = DriverManager.getConnection("den1.mysql3.gear.host", "", "");
             stmt = connection.createStatement();
             instance = new Database();
             return instance;
