@@ -12,8 +12,19 @@ import java.util.List;
  *
  * @author olive
  */
-public class RecieverDAO implements DAO<Reciever>{
+public class RecieverDAO implements DAO<Reciever> {
+
     List<Reciever> recievers = new ArrayList<>();
+    private static RecieverDAO instance;
+    
+    private RecieverDAO(){}
+    
+    public static RecieverDAO getInstance(){
+        if(instance == null){
+            instance = new RecieverDAO();
+        }
+        return instance;
+    }
 
     @Override
     public List<Reciever> findAll() {
@@ -23,7 +34,7 @@ public class RecieverDAO implements DAO<Reciever>{
     @Override
     public List<Reciever> findById(int id) {
         List<Reciever> temp = new ArrayList<>();
-        
+
         for (Reciever reciever : recievers) {
             if (reciever.getDonorID() == id) {
                 temp.add(reciever);
@@ -67,6 +78,13 @@ public class RecieverDAO implements DAO<Reciever>{
         }
     }
 
-    
-    
+    @Override
+    public int getOpenId() {
+        Reciever rec = null;
+        for(Reciever i : recievers){
+            rec = i;
+        }
+        return rec.getRecieverID();
+    }
+
 }

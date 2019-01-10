@@ -66,5 +66,10 @@ public class DonationDAO implements DAO<Donation>{
             return false;
         }
     }
+
+    @Override
+    public int getOpenId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

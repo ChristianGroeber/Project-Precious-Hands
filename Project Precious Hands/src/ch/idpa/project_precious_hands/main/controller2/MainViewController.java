@@ -7,14 +7,19 @@ package ch.idpa.project_precious_hands.main.controller2;
 
 import ch.idpa.project_precious_hands.main.Model.Child;
 import ch.idpa.project_precious_hands.main.Model.Donation;
+import ch.idpa.project_precious_hands.main.Model.Donor;
+import ch.idpa.project_precious_hands.main.Model.DonorDAO;
+import ch.idpa.project_precious_hands.main.Model.RecieverDAO;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SingleSelectionModel;
@@ -88,7 +93,7 @@ public class MainViewController implements Initializable {
     private TableColumn<?, ?> colLastNameDonor;
     @FXML
     private MenuBar menuBar;
-    
+
     private static final Settings settings = Settings.getInstance();
     @FXML
     private TableView<?> tblDonor;
@@ -108,31 +113,41 @@ public class MainViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if(settings != null){
+        if (settings != null) {
             settings.setMenuBar(menuBar);
         }
-    }    
+    }
 
     @FXML
     private void newDonation(ActionEvent event) {
         Donation donation = new Donation();
-        
+
     }
 
     @FXML
     private void save(ActionEvent event) {
+        String id = ((Control) event.getSource()).getId();
+        switch (id) {
+            case("btnSaveDonation"):
+                saveDonation();
+                break;
+        }
+    }
+    
+    private void saveDonation(){
+        String amount = txtAmount.getText();
+        List<Donor> donor = DonorDAO.getInstance().findByName(txtDonorChooser.getText());
     }
 
     @FXML
     private void chooseDonor(ActionEvent event) {
-        
+
     }
 
     @FXML
     private void chooseChild(ActionEvent event) throws IOException {
         loadWindow("DetailView", "Child");
     }
-
 
     @FXML
     private void newChild(ActionEvent event) {
@@ -151,20 +166,17 @@ public class MainViewController implements Initializable {
         loadWindow("DetailView", "Donation Detail");
     }
 
-
     @FXML
     private void childDetail(ActionEvent event) throws IOException {
         loadWindow("DetailView", "Child Detail");
     }
-
 
     @FXML
     private void donorDetail(ActionEvent event) throws IOException {
         loadWindow("DetailView", "Donor Detail");
     }
 
-    
-    private void loadWindow(String window, String title) throws IOException{
+    private void loadWindow(String window, String title) throws IOException {
         Starter start = new Starter();
         start.changeScreen("view2", window, title);
 
@@ -176,7 +188,7 @@ public class MainViewController implements Initializable {
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(0);
         txtChildChooser.setText(child.getLastName());
-        Donation donation = new Donation();
+        Donation donation = new Donation(0, 0, RecieverDAO.getInstance().getOpenId(),);
         donation.setToDonate(child);
         System.out.println("child = " + child);
     }
@@ -184,5 +196,5 @@ public class MainViewController implements Initializable {
     @FXML
     private void addDonationToDonor(ActionEvent event) {
     }
-    
+
 }

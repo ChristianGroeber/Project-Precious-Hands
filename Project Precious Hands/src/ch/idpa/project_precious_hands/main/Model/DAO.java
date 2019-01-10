@@ -23,4 +23,6 @@ public interface DAO<T> {
     
     
     boolean delete(T t);
+    
+    int getOpenId();
 }

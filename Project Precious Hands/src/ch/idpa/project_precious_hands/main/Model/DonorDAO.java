@@ -14,7 +14,15 @@ import java.util.List;
  */
 public class DonorDAO implements DAO<Donor>{
     
-    List<Donor> donors = new ArrayList<>();
+    private List<Donor> donors = new ArrayList<>();
+    private static DonorDAO instance;
+    
+    public static DonorDAO getInstance(){
+        if(instance == null){
+            instance = new DonorDAO();
+        }
+        return instance;
+    }
 
     @Override
     public List<Donor> findAll() {
@@ -73,6 +81,11 @@ public class DonorDAO implements DAO<Donor>{
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public int getOpenId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
