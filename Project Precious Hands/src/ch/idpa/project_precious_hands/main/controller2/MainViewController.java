@@ -33,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
+import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
@@ -192,27 +193,21 @@ public class MainViewController implements Initializable {
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(0);
         txtChildChooser.setText(child.getLastName());
-        Donation donation = new Donation(new DonationDAO().getOpenId(), 0, RecieverDAO.getInstance().getOpenId(), getAmountDonated(child), new Date());
-        while(new DonationDAO().update(donation)){
+        Donation donation = new Donation(new DonationDAO().getOpenId(), 0, RecieverDAO.getInstance().getOpenId(), getAmountDonated(), new Date());
+        while (new DonationDAO().update(donation)) {
             System.out.println("adding to donation array");
         }
     }
 
-    private int getAmountDonated(Child child) {
+    private int getAmountDonated() {
         boolean validAmount = false;
         int ret = 0;
         while (!validAmount) {
-            TextInputDialog dialog = new TextInputDialog("");
-            dialog.setTitle("Amount donated");
-            dialog.setHeaderText("Please enter the amount that was donated to " + child.getName());
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()) {
-                try {
-                    ret = Integer.parseInt(result.get());
-                    validAmount = true;
-                } catch (NumberFormatException e) {
-                    System.out.println("Amount entered is not valid");
-                }
+            try {
+                ret = Integer.parseInt(txtAmount.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showConfirmDialog(null, "Error", "This entry wasn't valid, please try again.", JOptionPane.ERROR_MESSAGE);
+                System.out.println(e.toString());
             }
         }
         return ret;
