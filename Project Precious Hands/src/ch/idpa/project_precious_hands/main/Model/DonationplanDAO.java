@@ -67,5 +67,10 @@ public class DonationplanDAO implements DAO<Donationplan>{
             return false;
         }
     }
+
+    @Override
+    public int getOpenId() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

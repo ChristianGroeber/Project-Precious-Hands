@@ -17,6 +17,8 @@ public class Donation {
     private int recieverID;
     private int amount;
     private Date receptionDate;
+    
+    public Donation(){}
 
     public Donation(int donationID, int donorID, int recieverID, int amount, Date receptionDate) {
         this.donationID = donationID;

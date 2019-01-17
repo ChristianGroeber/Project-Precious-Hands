@@ -7,13 +7,16 @@ package ch.idpa.project_precious_hands.main.controller2;
 
 import ch.idpa.project_precious_hands.main.Model.Child;
 import ch.idpa.project_precious_hands.main.Model.Donation;
+import ch.idpa.project_precious_hands.main.Model.DonationDAO;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
 import ch.idpa.project_precious_hands.main.Model.RecieverDAO;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +31,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 
 /**
@@ -128,13 +132,13 @@ public class MainViewController implements Initializable {
     private void save(ActionEvent event) {
         String id = ((Control) event.getSource()).getId();
         switch (id) {
-            case("btnSaveDonation"):
+            case ("btnSaveDonation"):
                 saveDonation();
                 break;
         }
     }
-    
-    private void saveDonation(){
+
+    private void saveDonation() {
         String amount = txtAmount.getText();
         List<Donor> donor = DonorDAO.getInstance().findByName(txtDonorChooser.getText());
     }
@@ -188,9 +192,30 @@ public class MainViewController implements Initializable {
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(0);
         txtChildChooser.setText(child.getLastName());
-        Donation donation = new Donation(0, 0, RecieverDAO.getInstance().getOpenId(),);
-        donation.setToDonate(child);
-        System.out.println("child = " + child);
+        Donation donation = new Donation(new DonationDAO().getOpenId(), 0, RecieverDAO.getInstance().getOpenId(), getAmountDonated(child), new Date());
+        while(new DonationDAO().update(donation)){
+            System.out.println("adding to donation array");
+        }
+    }
+
+    private int getAmountDonated(Child child) {
+        boolean validAmount = false;
+        int ret = 0;
+        while (!validAmount) {
+            TextInputDialog dialog = new TextInputDialog("");
+            dialog.setTitle("Amount donated");
+            dialog.setHeaderText("Please enter the amount that was donated to " + child.getName());
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                try {
+                    ret = Integer.parseInt(result.get());
+                    validAmount = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Amount entered is not valid");
+                }
+            }
+        }
+        return ret;
     }
 
     @FXML
