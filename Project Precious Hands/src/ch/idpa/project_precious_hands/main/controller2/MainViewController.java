@@ -193,7 +193,8 @@ public class MainViewController implements Initializable {
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(0);
         txtChildChooser.setText(child.getLastName());
-        Donation donation = new Donation(new DonationDAO().getOpenId(), 0, RecieverDAO.getInstance().getOpenId(), getAmountDonated(), new Date());
+        Reciever rec = new Reciever
+        Donation donation = new Donation(new DonationDAO().getOpenId(), RecieverDAO.getInstance().getOpenId(), getAmountDonated(), new Date());
         while (new DonationDAO().update(donation)) {
             System.out.println("adding to donation array");
         }

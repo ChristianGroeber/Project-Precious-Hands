@@ -82,11 +82,11 @@
                                                             <TextField fx:id="txtAmount" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                             <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                                <children>
-                                                                  <Button mnemonicParsing="false" onAction="#newDonation" text="Another new Donation" />
+                                                                  <Button mnemonicParsing="false" onAction="#newDonation" text="Another new Donation Plan" />
                                                                   <Button fx:id="btnSaveDonation" mnemonicParsing="false" onAction="#save" text="Save" />
                                                                </children>
                                                             </HBox>
-                                                            <Label text="New Donation" GridPane.columnIndex="1">
+                                                            <Label text="New Donation Plan" GridPane.columnIndex="1">
                                                                <font>
                                                                   <Font name="System Bold" size="21.0" />
                                                                </font>
@@ -104,6 +104,8 @@
                                                                   <Button mnemonicParsing="false" onAction="#chooseChild" text="Choose" />
                                                                </children>
                                                             </HBox>
+                                                            <Label text="Durance" GridPane.rowIndex="4" />
+                                                            <DatePicker fx:id="txtUntil" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                          </children>
                                                       </GridPane>
                                                    </children>
@@ -221,7 +223,7 @@
                                                       <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                                          <buttons>
                                                             <Button mnemonicParsing="false" onAction="#childDetail" text="Detail" />
-                                                            <Button mnemonicParsing="false" onAction="#addDonationToChild" text="Add Donation" />
+                                                            <Button mnemonicParsing="false" onAction="#addDonationToChild" text="Add Donation Plan" />
                                                          </buttons>
                                                       </ButtonBar>
                                                    </children>
@@ -318,7 +320,7 @@
                                                       <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                                          <buttons>
                                                             <Button mnemonicParsing="false" onAction="#donorDetail" text="Detail" />
-                                                            <Button mnemonicParsing="false" onAction="#addDonationToDonor" text="Add Donation" />
+                                                            <Button mnemonicParsing="false" onAction="#addDonationToDonor" text="Add Donation Plan" />
                                                          </buttons>
                                                       </ButtonBar>
                                                    </children>
