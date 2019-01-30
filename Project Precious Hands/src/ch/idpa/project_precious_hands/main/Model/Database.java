@@ -11,11 +11,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,23 +37,26 @@ public class Database {
     private static String username = "";
     private static String password = "";
 
+    private static final String LOCALE_DIRECTORY = "C:/sqlite/db/local.db";
+
     private Database() throws SQLException {
 
     }
 
-    public static Database getInstance() throws SQLException, FileNotFoundException {
+    public static Database getInstance() throws SQLException, FileNotFoundException, ClassNotFoundException {
         if (instance == null) {
             try {
-                File data = new File("password.txt");
+                File data = new File("password");
                 FileReader reader = new FileReader(data);
                 BufferedReader br = new BufferedReader(reader);
+            
                 username = br.readLine();
                 password = br.readLine();
                 br.close();
             } catch (IOException e) {
-                System.out.println("e = " + e);
+                System.out.println("IOException in Database Class= " + e.getMessage());
             }
-
+            Class.forName("com.mysql.jdbc.Driver"); 
             connection = DriverManager.getConnection(DB_URL, username, password);
             stmt = connection.createStatement();
             instance = new Database();
@@ -96,5 +102,31 @@ public class Database {
 
         query = "";
         result = stmt.executeQuery("");
+    }
+
+    public void createDatabse() {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:" + LOCALE_DIRECTORY);
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
+                System.out.println("A new database has been created.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("sqlExc: " + e.getMessage());
+            try {
+                new File(LOCALE_DIRECTORY).mkdirs();
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void createTables() throws SQLException {
+        result = stmt.executeQuery("Select * From sys.tables");
+        while (result.next()) {
+            System.out.println(result.next());
+        }
     }
 }

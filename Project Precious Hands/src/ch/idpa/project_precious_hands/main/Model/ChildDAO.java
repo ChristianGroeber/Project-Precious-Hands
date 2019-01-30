@@ -18,7 +18,7 @@ import java.util.List;
 public class ChildDAO implements DAO<Child>{
     private List<Child> children = new ArrayList<>();
 
-    public ChildDAO() throws SQLException, FileNotFoundException {
+    public ChildDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
         /*        Database.getInstance().openConnection("preciousdb", "Os1t~T6E!5wi");
         ResultSet rs = Database.getInstance().getTable("SELECT * FROM child;");
         for (Object r : rs) {

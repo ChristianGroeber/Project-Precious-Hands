@@ -6,18 +6,23 @@
 package ch.idpa.project_precious_hands.main.controller2;
 
 import ch.idpa.project_precious_hands.main.Model.Child;
+import ch.idpa.project_precious_hands.main.Model.Database;
 import ch.idpa.project_precious_hands.main.Model.Donation;
 import ch.idpa.project_precious_hands.main.Model.DonationDAO;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
 import ch.idpa.project_precious_hands.main.Model.RecieverDAO;
 import ch.idpa.project_precious_hands.main.Starter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -121,6 +126,7 @@ public class MainViewController implements Initializable {
         if (settings != null) {
             settings.setMenuBar(menuBar);
         }
+
     }
 
     @FXML
@@ -146,7 +152,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void chooseDonor(ActionEvent event) {
-
+        
     }
 
     @FXML
@@ -156,6 +162,11 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void newChild(ActionEvent event) {
+        try {
+            Database.getInstance().createTables();
+        } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -193,11 +204,11 @@ public class MainViewController implements Initializable {
         SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
         selectionModel.select(0);
         txtChildChooser.setText(child.getLastName());
-        Reciever rec = new Reciever
-        Donation donation = new Donation(new DonationDAO().getOpenId(), RecieverDAO.getInstance().getOpenId(), getAmountDonated(), new Date());
-        while (new DonationDAO().update(donation)) {
-            System.out.println("adding to donation array");
-        }
+//        Reciever rec = new Reciever
+//        Donation donation = new Donation(new DonationDAO().getOpenId(), RecieverDAO.getInstance().getOpenId(), getAmountDonated(), new Date());
+//        while (new DonationDAO().update(donation)) {
+//            System.out.println("adding to donation array");
+//        }
     }
 
     private int getAmountDonated() {

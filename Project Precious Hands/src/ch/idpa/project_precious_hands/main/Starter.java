@@ -5,6 +5,7 @@
  */
 package ch.idpa.project_precious_hands.main;
 
+import ch.idpa.project_precious_hands.main.Model.Database;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,6 @@ public class Starter extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-
         changeScreen("view2", "MainView", "Precious Hands");
     }
 
@@ -48,8 +48,8 @@ public class Starter extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    
-    public String getTitle(){
+
+    public String getTitle() {
         return stage.getTitle();
     }
 
