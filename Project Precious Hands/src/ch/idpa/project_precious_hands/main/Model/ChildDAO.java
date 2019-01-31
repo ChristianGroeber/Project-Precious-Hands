@@ -30,17 +30,14 @@ public class ChildDAO implements DAO<Child> {
     public ChildDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
         Database.getInstance().openConnection("", "");
         ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.child;");
-        int i = 0;
         while (rs.next()) {
             //            InputStream in = rs.getBlob("Image").getBinaryStream();
             InputStream in = null;
             BufferedImage img = null;
             //                img = ImageIO.read(in);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Child c = new Child(rs.getInt("ID_Child"), rs.getString("Name"), rs.getString("LastName"), rs.getString("Gender").charAt(0), rs.getDate("Birthday"), img);
             children.add(c);
         }
-        System.out.println("rs = " + rs.first() + " " + rs.getString("ID_Child"));
         Database.getInstance().closeConnection();
     }
     
