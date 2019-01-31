@@ -21,15 +21,13 @@ public class LogEntryDAO implements DAO<LogEntry>{
     }
 
     @Override
-    public List<LogEntry> findById(int id) {
-        List<LogEntry> temp = new ArrayList<>();
-        
+    public LogEntry findById(int id) {
         for (LogEntry logEntry : logEntries) {
             if (logEntry.getLogEntryID() == id) {
-                temp.add(logEntry);
+                return logEntry;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override

@@ -7,13 +7,15 @@ package ch.idpa.project_precious_hands.main.controller2;
 
 import ch.idpa.project_precious_hands.main.Model.Child;
 import ch.idpa.project_precious_hands.main.Model.ChildDAO;
+import ch.idpa.project_precious_hands.main.Model.Choosable;
 import ch.idpa.project_precious_hands.main.Model.Database;
 import ch.idpa.project_precious_hands.main.Model.Donation;
 import ch.idpa.project_precious_hands.main.Model.DonationDAO;
 import ch.idpa.project_precious_hands.main.Model.DonationInterval;
+import ch.idpa.project_precious_hands.main.Model.Donationplan;
+import ch.idpa.project_precious_hands.main.Model.DonationplanDAO;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
-import org.joda.time.Interval;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
@@ -22,11 +24,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import static java.time.temporal.TemporalQueries.localDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,23 +62,21 @@ public class MainViewController implements Initializable {
 
     @FXML
     private TextField txtAmount;
-    @FXML
-    private Button btnSaveDonation;
-    @FXML
     private TextField txtDonorChooser;
-    @FXML
     private TextField txtChildChooser;
-    //__________Table Donations_________________
+    //________Table Donationplans____________________
     @FXML
-    private TableView<Donation> tblDonations;
+    private TableView<Donationplan> tblDonationplans;
     @FXML
-    private TableColumn<Donation, Integer> colAmount;
+    private TableColumn<Donationplan, Integer> colIDDonationplan;
     @FXML
-    private TableColumn<Donation, Integer> colDonor;
+    private TableColumn<Donationplan, Integer> colAmount;
     @FXML
-    private TableColumn<Donation, Integer> colChild;
+    private TableColumn<Donationplan, Integer> colDonor;
     @FXML
-    private TableColumn<Donation, Date> colDateCreated;
+    private TableColumn<Donationplan, Integer> colChild;
+    @FXML
+    private TableColumn<Donationplan, Date> colDateCreated;
     //__________END Table Donations_________________
 
     //_________Table Children_______________________
@@ -146,12 +144,19 @@ public class MainViewController implements Initializable {
     private ArrayList<Child> arrChildren;
     private ArrayList<Donor> arrDonors;
     private ArrayList<Donation> arrDonations;
+    private ArrayList<Donationplan> arrDonationplans;
     @FXML
     private DatePicker txtUntil;
     @FXML
     private TextField txtNameDonor;
     @FXML
     private ComboBox<String> cmbInterval;
+    @FXML
+    private Button btnSaveDonationplan;
+    @FXML
+    private ComboBox<String> cmbDonors;
+    @FXML
+    private ComboBox<String> cmbChildren;
 
     public MainViewController() {
         try {
@@ -173,12 +178,16 @@ public class MainViewController implements Initializable {
             arrChildren = (ArrayList<Child>) new ChildDAO().findAll();
             arrDonors = (ArrayList<Donor>) new DonorDAO().findAll();
             arrDonations = (ArrayList<Donation>) new DonationDAO().findAll();
+            arrDonationplans = (ArrayList<Donationplan>) new DonationplanDAO().findAll();
         } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         fillCmbInterval();
+        fillCmbDonors();
+        fillCmbChildren();
         loadChildrenInTable();
         loadDonorsInTable();
+        loadDonationplansInTable();
     }
 
     private void fillCmbInterval() {
@@ -220,6 +229,42 @@ public class MainViewController implements Initializable {
         tblDonor.setItems(data);
     }
 
+    private void loadDonationplansInTable() {
+        ObservableList<Donationplan> data = FXCollections.observableArrayList(arrDonationplans);
+        colIDDonationplan.setCellValueFactory(new PropertyValueFactory<>("ID_Donationplan"));
+        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        colDonor.setCellValueFactory(new PropertyValueFactory<>("donorID"));
+        colChild.setCellValueFactory(new PropertyValueFactory<>("childID"));
+        colDateCreated.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+        tblDonationplans.setItems(data);
+    }
+
+    private void fillCmbDonors() {
+        ArrayList<Donor> donors = arrDonors;
+        ObservableList<String> options = FXCollections.observableArrayList();
+        for (Donor i : donors) {
+            options.add(i.getDonorID() + " " + i.getName() + " " + i.getLastName());
+        }
+        cmbDonors.setItems(options);
+    }
+
+    private void fillCmbChildren() {
+        ArrayList<Child> children = arrChildren;
+        ObservableList<String> options = FXCollections.observableArrayList();
+        for (Child i : children) {
+            options.add(i.getChildID() + " " + i.getName() + " " + i.getLastName());
+        }
+        cmbChildren.setItems(options);
+    }
+
+    private void fillUniversalCombobox(ArrayList<Choosable> arr, ComboBox cmb) {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        for (Choosable i : arr) {
+            options.add(i.getName() + " " + i.getLastName());
+        }
+        cmb.setItems(options);
+    }
+
     @FXML
     private void newDonation(ActionEvent event) {
         Donation donation = new Donation();
@@ -238,6 +283,9 @@ public class MainViewController implements Initializable {
                 break;
             case ("btnSaveDonor"):
                 saveDonor();
+                break;
+            case ("btnSaveDonationplan"):
+                saveDonationplan();
                 break;
         }
     }
@@ -269,6 +317,28 @@ public class MainViewController implements Initializable {
         loadDonorsInTable();
     }
 
+    private void saveDonationplan() {
+        try {
+            int amount = Integer.parseInt(txtAmount.getText());
+            int donorID = Integer.parseInt(cmbDonors.getValue().split(" ")[0]);
+            int childID = Integer.parseInt(cmbChildren.getValue().split(" ")[0]);
+            LocalDate dt = txtUntil.getValue();
+            Instant instant = Instant.from(dt.atStartOfDay(ZoneId.systemDefault()));
+            Date date = Date.from(instant);
+            java.sql.Date sDate = convertUtilToSql(date);
+            String interval = cmbInterval.getValue();
+            Donationplan d = new Donationplan(amount, donorID, childID, sDate, interval);
+            DonationplanDAO.getInstance().insert(d);
+            arrDonationplans = (ArrayList<Donationplan>) DonationplanDAO.getInstance().findAll();
+            loadDonationplansInTable();
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Please Enter a valid Amount");
+        } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
         java.sql.Date sDate = new java.sql.Date(uDate.getTime());
         return sDate;
@@ -279,12 +349,6 @@ public class MainViewController implements Initializable {
         List<Donor> donor = DonorDAO.getInstance().findByName(txtDonorChooser.getText());
     }
 
-    @FXML
-    private void chooseDonor(ActionEvent event) {
-
-    }
-
-    @FXML
     private void chooseChild(ActionEvent event) throws IOException {
         loadWindow("DetailView", "Child");
     }

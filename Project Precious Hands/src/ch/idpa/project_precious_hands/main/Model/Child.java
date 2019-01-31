@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author olive
  */
-public class Child {
+public class Child extends Choosable{
     private int childID;
     private String name;
     private String lastName;

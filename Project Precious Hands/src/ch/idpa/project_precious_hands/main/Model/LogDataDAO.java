@@ -22,15 +22,13 @@ public class LogDataDAO implements DAO<LogData>{
     }
 
     @Override
-    public List<LogData> findById(int id) {
-        List<LogData> temp = new ArrayList<>();
-
+    public LogData findById(int id) {
         for (LogData loggedData : logData) {
             if (loggedData.getLogID() == id) {
-                temp.add(loggedData);
+                return loggedData;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override

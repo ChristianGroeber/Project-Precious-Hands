@@ -12,7 +12,8 @@ import java.util.List;
  *
  * @author olive
  */
-public class UserDataDAO implements DAO<UserData>{
+public class UserDataDAO implements DAO<UserData> {
+
     private List<UserData> userData = new ArrayList<>();
 
     @Override
@@ -21,15 +22,13 @@ public class UserDataDAO implements DAO<UserData>{
     }
 
     @Override
-    public List<UserData> findById(int id) {
-        List<UserData> temp = new ArrayList<>();
-
+    public UserData findById(int id) {
         for (UserData data : userData) {
             if (data.getUserID() == id) {
-                temp.add(data);
+                return data;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override
@@ -78,5 +77,5 @@ public class UserDataDAO implements DAO<UserData>{
     public int getOpenId() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

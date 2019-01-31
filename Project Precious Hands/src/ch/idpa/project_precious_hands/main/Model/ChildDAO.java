@@ -58,15 +58,13 @@ public class ChildDAO implements DAO<Child> {
     }
 
     @Override
-    public List<Child> findById(int id) {
-        List<Child> temp = new ArrayList<>();
-
+    public Child findById(int id) {
         for (Child child : children) {
             if (child.getChildID() == id) {
-                temp.add(child);
+                return child;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override
@@ -118,7 +116,7 @@ public class ChildDAO implements DAO<Child> {
     }
 
     public int getOpenId(int id) {
-        if(findById(id).size() != 0){
+        if(findById(id) != null){
             id++;
             return getOpenId(id);
         }

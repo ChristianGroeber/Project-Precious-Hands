@@ -9,7 +9,7 @@ package ch.idpa.project_precious_hands.main.Model;
  *
  * @author olive
  */
-public class Donor {
+public class Donor extends Choosable{
 
     private int donorID;
     private String name;

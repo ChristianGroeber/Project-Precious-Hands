@@ -49,15 +49,13 @@ public class DonorDAO implements DAO<Donor> {
     }
 
     @Override
-    public List<Donor> findById(int id) {
-        List<Donor> temp = new ArrayList<>();
-
+    public Donor findById(int id) {
         for (Donor donor : donors) {
             if (donor.getDonorID() == id) {
-                temp.add(donor);
+                return donor;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override
@@ -114,7 +112,7 @@ public class DonorDAO implements DAO<Donor> {
     }
 
     public int getOpenId(int id) {
-        if (!findById(id).isEmpty()) {
+        if (findById(id) != null) {
             id++;
             return getOpenId(id);
         }

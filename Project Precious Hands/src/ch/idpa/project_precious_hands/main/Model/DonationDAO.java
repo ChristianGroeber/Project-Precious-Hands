@@ -51,15 +51,13 @@ public class DonationDAO implements DAO<Donation> {
     }
 
     @Override
-    public List<Donation> findById(int id) {
-        List<Donation> temp = new ArrayList<>();
-
+    public Donation findById(int id) {
         for (Donation donation : donations) {
             if (donation.getDonationID() == id) {
-                temp.add(donation);
+                return donation;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override

@@ -49,15 +49,13 @@ public class RecieverDAO implements DAO<Reciever> {
     }
 
     @Override
-    public List<Reciever> findById(int id) {
-        List<Reciever> temp = new ArrayList<>();
-
+    public Reciever findById(int id) {
         for (Reciever reciever : recievers) {
             if (reciever.getDonorID() == id) {
-                temp.add(reciever);
+                return reciever;
             }
         }
-        return temp;
+        return null;
     }
 
     @Override

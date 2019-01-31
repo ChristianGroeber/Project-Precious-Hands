@@ -278,7 +278,7 @@
                                                             <HBox GridPane.columnIndex="1" GridPane.rowIndex="7">
                                                                <children>
                                                                   <Button mnemonicParsing="false" onAction="#newDonation" text="Another new Donation Plan" />
-                                                                  <Button fx:id="btnSaveDonation" mnemonicParsing="false" onAction="#save" text="Save" />
+                                                                  <Button fx:id="btnSaveDonationplan" mnemonicParsing="false" onAction="#save" text="Save" />
                                                                </children>
                                                             </HBox>
                                                             <Label text="New Donation Plan" GridPane.columnIndex="1">
@@ -289,14 +289,12 @@
                                                             <Label text="Child" GridPane.rowIndex="3" />
                                                             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                <children>
-                                                                  <TextField fx:id="txtDonorChooser" onAction="#chooseDonor" prefHeight="26.0" prefWidth="226.0" promptText="Type in the last Name of the Donor" />
-                                                                  <Button mnemonicParsing="false" onAction="#chooseDonor" text="Choose" />
+                                                                  <ComboBox fx:id="cmbDonors" editable="true" prefWidth="150.0" />
                                                                </children>
                                                             </HBox>
                                                             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                <children>
-                                                                  <TextField fx:id="txtChildChooser" onAction="#chooseChild" prefHeight="26.0" prefWidth="226.0" promptText="Type in the last Name of the Child" />
-                                                                  <Button mnemonicParsing="false" onAction="#chooseChild" text="Choose" />
+                                                                  <ComboBox fx:id="cmbChildren" editable="true" prefWidth="150.0" />
                                                                </children>
                                                             </HBox>
                                                             <Label text="Durance" GridPane.rowIndex="4" />
@@ -315,9 +313,9 @@
                                        <content>
                                           <VBox prefHeight="358.0" prefWidth="402.0">
                                              <children>
-                                                <TableView fx:id="tblDonations" maxHeight="402.0" minHeight="200.0" prefHeight="333.0" prefWidth="382.0">
+                                                <TableView fx:id="tblDonationplans" maxHeight="402.0" minHeight="200.0" prefHeight="333.0" prefWidth="382.0">
                                                    <columns>
-                                                      <TableColumn prefWidth="75.0" text="ID" />
+                                                      <TableColumn fx:id="colIDDonationplan" prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="colAmount" prefWidth="75.0" text="Amount" />
                                                       <TableColumn fx:id="colDonor" prefWidth="75.0" text="Donor" />
                                                       <TableColumn fx:id="colChild" prefWidth="75.0" text="Child" />
