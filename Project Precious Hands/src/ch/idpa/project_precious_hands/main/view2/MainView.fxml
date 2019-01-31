@@ -325,6 +325,7 @@
                                                 <ButtonBar prefHeight="40.0" prefWidth="200.0">
                                                   <buttons>
                                                       <Button mnemonicParsing="false" onAction="#donationDetail" text="Detail" />
+                                                      <Button mnemonicParsing="false" onAction="#btnDonationDone" text="Donated" />
                                                   </buttons>
                                                 </ButtonBar>
                                              </children>

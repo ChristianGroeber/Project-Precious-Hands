@@ -47,6 +47,7 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -388,16 +389,31 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void addDonationToChild(ActionEvent event) {
-        Child child = tblChildren.getSelectionModel().getSelectedItem();
-        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-        selectionModel.select(0);
-        txtChildChooser.setText(child.getLastName());
+    private void addDonationToChild(ActionEvent event) throws ParseException {
+        try {
+            TablePosition pos = tblChildren.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Child item = tblChildren.getItems().get(row);
+
+            cmbChildren.setValue(item.getChildID() + " " + item.getName() + " " + item.getLastName());
+            SingleSelectionModel<Tab> mod = tabPane.getSelectionModel();
+            mod.select(tabDonations);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Please select a row");
+        }
 //        Reciever rec = new Reciever
 //        Donation donation = new Donation(new DonationDAO().getOpenId(), RecieverDAO.getInstance().getOpenId(), getAmountDonated(), new Date());
 //        while (new DonationDAO().update(donation)) {
 //            System.out.println("adding to donation array");
 //        }
+    }
+
+    @FXML
+    private void btnDonationDone(ActionEvent event) {
+        TablePosition pos = tblDonationplans.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        Donationplan item = tblDonationplans.getItems().get(row);
+        
     }
 
     private int getAmountDonated() {
@@ -417,5 +433,4 @@ public class MainViewController implements Initializable {
     @FXML
     private void addDonationToDonor(ActionEvent event) {
     }
-
 }
