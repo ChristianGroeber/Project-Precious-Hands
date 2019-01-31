@@ -61,7 +61,8 @@ public class Database {
 //            } catch (IOException e) {
 //                System.out.println("IOException in Database Class= " + e.getMessage());
 //            }
-
+            username = "preciousdb";
+            password = "Os1t~T6E!5wi";
             try {
                 Class.forName(DRIVER_ONLINE).newInstance();
             } catch (InstantiationException | IllegalAccessException ex) {

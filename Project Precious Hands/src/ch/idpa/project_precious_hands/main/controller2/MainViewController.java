@@ -25,6 +25,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,6 +41,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javax.swing.JOptionPane;
 
@@ -69,7 +72,7 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Donation, Date> colDateCreated;
     //__________END Table Donations_________________
-    
+
     //_________Table Children_______________________
     @FXML
     private TableView<Child> tblChildren;
@@ -82,7 +85,7 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Child, Date> colBirthday;
     //_________END Table Children_____________________
-    
+
     //_________Table Donors___________________________
     @FXML
     private TableView<Donor> tblDonor;
@@ -93,7 +96,7 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Donor, String> colLastNameDonor;
     //_________END Table Donors_______________________
-    
+
     @FXML
     private TextField txtNameChild;
     @FXML
@@ -163,10 +166,16 @@ public class MainViewController implements Initializable {
         } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        loadChildrenInTable();
     }
 
     private void loadChildrenInTable() {
-
+        ObservableList<Child> data = FXCollections.observableArrayList(arrChildren);
+        colChildID.setCellValueFactory(new PropertyValueFactory<>("childID"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colBirthday.setCellValueFactory(new PropertyValueFactory<>("birthday"));
+        tblChildren.setItems(data);
     }
 
     @FXML

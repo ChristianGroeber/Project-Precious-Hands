@@ -5,8 +5,13 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.io.FileNotFoundException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,14 +19,26 @@ import java.util.List;
  */
 public class RecieverDAO implements DAO<Reciever> {
 
-    List<Reciever> recievers = new ArrayList<>();
+    private final List<Reciever> recievers = new ArrayList<>();
     private static RecieverDAO instance;
-    
-    private RecieverDAO(){}
+
+    public RecieverDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
+        Database.getInstance().openConnection("", "");
+        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.donation;");
+        while (rs.next()) {
+            Reciever c = new Reciever(rs.getInt("ID_Receiver"), rs.getInt("ID_Donor"), rs.getInt("ID_Child"), rs.getInt("ID_DonationPlan"));
+            recievers.add(c);
+        }
+        Database.getInstance().closeConnection();
+    }
     
     public static RecieverDAO getInstance(){
         if(instance == null){
-            instance = new RecieverDAO();
+            try {
+                instance = new RecieverDAO();
+            } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+                Logger.getLogger(RecieverDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return instance;
     }
@@ -81,7 +98,7 @@ public class RecieverDAO implements DAO<Reciever> {
     @Override
     public int getOpenId() {
         Reciever rec = null;
-        for(Reciever i : recievers){
+        for (Reciever i : recievers) {
             rec = i;
         }
         return rec.getRecieverID();

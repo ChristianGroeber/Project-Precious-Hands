@@ -118,7 +118,7 @@
                                        <content>
                                           <VBox prefHeight="358.0" prefWidth="402.0">
                                              <children>
-                                                <TableView fx:id="tblPayments" maxHeight="402.0" minHeight="200.0" prefHeight="333.0" prefWidth="382.0">
+                                                <TableView fx:id="tblDonations" maxHeight="402.0" minHeight="200.0" prefHeight="333.0" prefWidth="382.0">
                                                    <columns>
                                                       <TableColumn prefWidth="75.0" text="ID" />
                                                       <TableColumn fx:id="colAmount" prefWidth="75.0" text="Amount" />
@@ -214,7 +214,7 @@
                                                    <children>
                                                       <TableView fx:id="tblChildren" prefHeight="511.0" prefWidth="312.0">
                                                          <columns>
-                                                            <TableColumn prefWidth="75.0" text="ID" />
+                                                            <TableColumn fx:id="colChildID" prefWidth="75.0" text="ID" />
                                                             <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
                                                             <TableColumn fx:id="colLastName" prefWidth="75.0" text="Last Name" />
                                                             <TableColumn fx:id="colBirthday" prefWidth="75.0" text="Birthday" />
@@ -312,7 +312,7 @@
                                                    <children>
                                                       <TableView fx:id="tblDonor" prefHeight="511.0" prefWidth="312.0">
                                                          <columns>
-                                                            <TableColumn prefWidth="75.0" text="ID" />
+                                                            <TableColumn fx:id="colDonorID" prefWidth="75.0" text="ID" />
                                                             <TableColumn fx:id="colNameDonor" prefWidth="75.0" text="Name" />
                                                             <TableColumn fx:id="colLastNameDonor" prefWidth="75.0" text="Last Name" />
                                                          </columns>

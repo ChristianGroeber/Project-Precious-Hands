@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +22,7 @@ import java.util.List;
 public class ChildDAO implements DAO<Child> {
 
     private List<Child> children = new ArrayList<>();
+    private static ChildDAO instance;
 
     public ChildDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
         Database.getInstance().openConnection("", "");
@@ -35,6 +38,17 @@ public class ChildDAO implements DAO<Child> {
         }
         System.out.println("rs = " + rs.first() + " " + rs.getString("ID_Child"));
         Database.getInstance().closeConnection();
+    }
+    
+    public static ChildDAO getInstance(){
+        if(instance == null){
+            try {
+                instance = new ChildDAO();
+            } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+                Logger.getLogger(ChildDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return instance;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Donor {
     private String phone;
     private int donationPlanID;
 
-    public Donor(int donorID, String name, String lastName, String street, String postalCode, String city, String email, String phone, int donationPlanID) {
+    public Donor(int donorID, String name, String lastName, String street, String postalCode, String city, String email, String phone) {
         this.donorID = donorID;
         this.name = name;
         this.lastName = lastName;
@@ -29,7 +29,7 @@ public class Donor {
         this.city = city;
         this.email = email;
         this.phone = phone;
-        this.donationPlanID = donationPlanID;
+//        this.donationPlanID = donationPlanID;
     }
 
     public int getDonorID() {
