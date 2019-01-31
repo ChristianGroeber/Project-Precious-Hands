@@ -57,16 +57,43 @@ public class MainViewController implements Initializable {
     private TextField txtDonorChooser;
     @FXML
     private TextField txtChildChooser;
+    //__________Table Donations_________________
     @FXML
-    private TableView<?> tblPayments;
+    private TableView<Donation> tblDonations;
     @FXML
-    private TableColumn<?, ?> colAmount;
+    private TableColumn<Donation, Integer> colAmount;
     @FXML
-    private TableColumn<?, ?> colDonor;
+    private TableColumn<Donation, Integer> colDonor;
     @FXML
-    private TableColumn<?, ?> colChild;
+    private TableColumn<Donation, Integer> colChild;
     @FXML
-    private TableColumn<?, ?> colDateCreated;
+    private TableColumn<Donation, Date> colDateCreated;
+    //__________END Table Donations_________________
+    
+    //_________Table Children_______________________
+    @FXML
+    private TableView<Child> tblChildren;
+    @FXML
+    private TableColumn<Child, Integer> colChildID;
+    @FXML
+    private TableColumn<Child, String> colName;
+    @FXML
+    private TableColumn<Child, String> colLastName;
+    @FXML
+    private TableColumn<Child, Date> colBirthday;
+    //_________END Table Children_____________________
+    
+    //_________Table Donors___________________________
+    @FXML
+    private TableView<Donor> tblDonor;
+    @FXML
+    private TableColumn<Donor, Integer> colDonorID;
+    @FXML
+    private TableColumn<Donor, String> colNameDonor;
+    @FXML
+    private TableColumn<Donor, String> colLastNameDonor;
+    //_________END Table Donors_______________________
+    
     @FXML
     private TextField txtNameChild;
     @FXML
@@ -75,12 +102,6 @@ public class MainViewController implements Initializable {
     private Button btnSaveChild;
     @FXML
     private ImageView imgChild;
-    @FXML
-    private TableColumn<?, ?> colName;
-    @FXML
-    private TableColumn<?, ?> colLastName;
-    @FXML
-    private TableColumn<?, ?> colBirthday;
     @FXML
     private TextField tytNameDonor;
     @FXML
@@ -100,15 +121,9 @@ public class MainViewController implements Initializable {
     @FXML
     private TextField txtPhoneNumberDonor;
     @FXML
-    private TableColumn<?, ?> colNameDonor;
-    @FXML
-    private TableColumn<?, ?> colLastNameDonor;
-    @FXML
     private MenuBar menuBar;
 
     private static final Settings settings = Settings.getInstance();
-    @FXML
-    private TableView<?> tblDonor;
     @FXML
     private Tab tabDonations;
     @FXML
@@ -116,14 +131,14 @@ public class MainViewController implements Initializable {
     @FXML
     private Tab tabDonors;
     @FXML
-    private TableView<Child> tblChildren;
-    @FXML
     private TabPane tabPane;
 
     private Database db;
     private ArrayList<Child> arrChildren;
     private ArrayList<Donor> arrDonors;
     private ArrayList<Donation> arrDonations;
+    @FXML
+    private DatePicker txtUntil;
 
     public MainViewController() {
         try {
@@ -143,16 +158,15 @@ public class MainViewController implements Initializable {
         }
         try {
             arrChildren = (ArrayList<Child>) new ChildDAO().findAll();
+            arrDonors = (ArrayList<Donor>) new DonorDAO().findAll();
+            arrDonations = (ArrayList<Donation>) new DonationDAO().findAll();
         } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        arrDonors = (ArrayList<Donor>) new DonorDAO().findAll();
-        arrDonations = (ArrayList<Donation>) new DonationDAO().findAll();
-        System.out.println(arrChildren.size());
     }
-    
-    private void loadChildrenInTable(){
-        
+
+    private void loadChildrenInTable() {
+
     }
 
     @FXML
