@@ -10,8 +10,10 @@ import ch.idpa.project_precious_hands.main.Model.ChildDAO;
 import ch.idpa.project_precious_hands.main.Model.Database;
 import ch.idpa.project_precious_hands.main.Model.Donation;
 import ch.idpa.project_precious_hands.main.Model.DonationDAO;
+import ch.idpa.project_precious_hands.main.Model.DonationInterval;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
+import org.joda.time.Interval;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
@@ -37,6 +39,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
@@ -147,6 +150,8 @@ public class MainViewController implements Initializable {
     private DatePicker txtUntil;
     @FXML
     private TextField txtNameDonor;
+    @FXML
+    private ComboBox<String> cmbInterval;
 
     public MainViewController() {
         try {
@@ -171,8 +176,31 @@ public class MainViewController implements Initializable {
         } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        fillCmbInterval();
         loadChildrenInTable();
         loadDonorsInTable();
+    }
+
+    private void fillCmbInterval() {
+        ArrayList<DonationInterval> intervals = createIntervals();
+        ObservableList< String> options = FXCollections.observableArrayList();
+        for (DonationInterval i : intervals) {
+            options.add(i.getDescription());
+        }
+        cmbInterval.setItems(options);
+    }
+
+    private ArrayList<DonationInterval> createIntervals() {
+        ArrayList<DonationInterval> inters = new ArrayList<>();
+        DonationInterval a = new DonationInterval("Monthly", 1.0);
+        DonationInterval b = new DonationInterval("Every Other Month", 2.0);
+        DonationInterval c = new DonationInterval("Quarterly", 3.0);
+        DonationInterval d = new DonationInterval("Semesterly", 6.0);
+        inters.add(a);
+        inters.add(b);
+        inters.add(c);
+        inters.add(d);
+        return inters;
     }
 
     private void loadChildrenInTable() {
@@ -183,8 +211,8 @@ public class MainViewController implements Initializable {
         colBirthday.setCellValueFactory(new PropertyValueFactory<>("birthday"));
         tblChildren.setItems(data);
     }
-    
-    private void loadDonorsInTable(){
+
+    private void loadDonorsInTable() {
         ObservableList<Donor> data = FXCollections.observableArrayList(arrDonors);
         colDonorID.setCellValueFactory(new PropertyValueFactory<>("donorID"));
         colNameDonor.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -226,8 +254,8 @@ public class MainViewController implements Initializable {
         arrChildren = (ArrayList<Child>) ChildDAO.getInstance().findAll();
         loadChildrenInTable();
     }
-    
-    private void saveDonor(){
+
+    private void saveDonor() {
         String name = txtNameDonor.getText();
         String lastName = txtLastNameDonor.getText();
         String road = txtRoadDonor.getText();
