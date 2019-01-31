@@ -10,7 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +36,7 @@ public class ChildDAO implements DAO<Child> {
             InputStream in = null;
             BufferedImage img = null;
             //                img = ImageIO.read(in);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Child c = new Child(rs.getInt("ID_Child"), rs.getString("Name"), rs.getString("LastName"), rs.getString("Gender").charAt(0), rs.getDate("Birthday"), img);
             children.add(c);
         }
@@ -40,7 +44,7 @@ public class ChildDAO implements DAO<Child> {
         Database.getInstance().closeConnection();
     }
     
-    public static ChildDAO getInstance(){
+    public static ChildDAO getInstance() throws ParseException{
         if(instance == null){
             try {
                 instance = new ChildDAO();
@@ -94,8 +98,14 @@ public class ChildDAO implements DAO<Child> {
     public boolean insert(Child t) {
         try {
             children.add(t);
+            String sql = t.getSql();
+            Database db = Database.getInstance();
+            db.openConnection("", "");
+            db.getStatement().executeUpdate(sql);
+            db.closeConnection();
             return true;
-        } catch (Exception e) {
+        } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
+            System.out.println("Error while inserting: " + e.toString());
             return false;
         }
     }
@@ -108,6 +118,14 @@ public class ChildDAO implements DAO<Child> {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public int getOpenId(int id) {
+        if(findById(id).size() != 0){
+            id++;
+            return getOpenId(id);
+        }
+        return id;
     }
 
     @Override

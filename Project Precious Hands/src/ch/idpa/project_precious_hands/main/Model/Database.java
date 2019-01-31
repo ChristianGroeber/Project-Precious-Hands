@@ -96,6 +96,14 @@ public class Database {
         connection = DriverManager.getConnection("jdbc:mysql://" + DB_URL + "/preciousdb", username, password);
         stmt = connection.createStatement();
     }
+    
+    public Statement getStatement(){
+        return stmt;
+    }
+    
+    public Connection getConnection(){
+        return connection;
+    }
 
     public void relog(String user, String pass) throws SQLException, ClassNotFoundException {
         closeConnection();

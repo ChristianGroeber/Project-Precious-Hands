@@ -12,16 +12,22 @@ import ch.idpa.project_precious_hands.main.Model.Donation;
 import ch.idpa.project_precious_hands.main.Model.DonationDAO;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
-import ch.idpa.project_precious_hands.main.Model.RecieverDAO;
 import ch.idpa.project_precious_hands.main.Starter;
+import java.awt.image.BufferedImage;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import static java.time.temporal.TemporalQueries.localDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +46,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javax.swing.JOptionPane;
@@ -185,13 +190,34 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void save(ActionEvent event) {
+    private void save(ActionEvent event) throws ParseException {
         String id = ((Control) event.getSource()).getId();
         switch (id) {
             case ("btnSaveDonation"):
                 saveDonation();
                 break;
+            case ("btnSaveChild"):
+                saveChild();
+                break;
         }
+    }
+
+    private void saveChild() throws ParseException {
+        String name = txtNameChild.getText();
+        String lastName = txtLastNameChild.getText();
+        LocalDate bd = txtBirthdayChild.getValue();
+        Instant instant = Instant.from(bd.atStartOfDay(ZoneId.systemDefault()));
+        Date date = Date.from(instant);
+        java.sql.Date sDate = convertUtilToSql(date);
+        Child c = new Child(name, lastName, 'm', sDate, new BufferedImage(1, 1, TYPE_INT_ARGB));
+        ChildDAO.getInstance().insert(c);
+        arrChildren = (ArrayList<Child>) ChildDAO.getInstance().findAll();
+        loadChildrenInTable();
+    }
+
+    private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
+        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+        return sDate;
     }
 
     private void saveDonation() {
