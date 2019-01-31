@@ -172,6 +172,7 @@ public class MainViewController implements Initializable {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         loadChildrenInTable();
+        loadDonorsInTable();
     }
 
     private void loadChildrenInTable() {
@@ -181,6 +182,14 @@ public class MainViewController implements Initializable {
         colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         colBirthday.setCellValueFactory(new PropertyValueFactory<>("birthday"));
         tblChildren.setItems(data);
+    }
+    
+    private void loadDonorsInTable(){
+        ObservableList<Donor> data = FXCollections.observableArrayList(arrDonors);
+        colDonorID.setCellValueFactory(new PropertyValueFactory<>("donorID"));
+        colNameDonor.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colLastNameDonor.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        tblDonor.setItems(data);
     }
 
     @FXML
