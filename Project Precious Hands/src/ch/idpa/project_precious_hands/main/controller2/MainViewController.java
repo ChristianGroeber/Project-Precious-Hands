@@ -126,7 +126,11 @@ public class MainViewController implements Initializable {
         if (settings != null) {
             settings.setMenuBar(menuBar);
         }
-
+        try {
+            Database.getInstance().createDatabase(0);
+        } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -152,7 +156,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void chooseDonor(ActionEvent event) {
-        
+
     }
 
     @FXML
@@ -162,11 +166,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void newChild(ActionEvent event) {
-        try {
-            Database.getInstance().createTables();
-        } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
-            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     @FXML

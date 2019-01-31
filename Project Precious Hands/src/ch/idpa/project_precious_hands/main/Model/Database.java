@@ -32,10 +32,11 @@ public class Database {
     private static Database instance;
 
     private static String DB_URL = "den1.mysql3.gear.host";
+    private final static String DRIVER_ONLINE = "com.mysql.jdbc.Driver";
     private static Connection connection;
     private static Statement stmt;
     private String query;
-    private ResultSet result;
+    private static ResultSet result;
     private User activeUser;
     private static String username = "";
     private static String password = "";
@@ -60,12 +61,15 @@ public class Database {
 //            } catch (IOException e) {
 //                System.out.println("IOException in Database Class= " + e.getMessage());
 //            }
-            usernamrd = "Os1t~T6E!5wi";
-            Class.forName("com.mysql.jdbc.Driver");
+
+            try {
+                Class.forName(DRIVER_ONLINE).newInstance();
+            } catch (InstantiationException | IllegalAccessException ex) {
+                Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            }
             connection = DriverManager.getConnection("jdbc:mysql://" + DB_URL, username, password);
             stmt = connection.createStatement();
             instance = new Database();
-            connection.close();
             fillArray();
             return instance;
         }
@@ -82,8 +86,12 @@ public class Database {
     }
 
     public void openConnection(String user, String pass) throws SQLException, ClassNotFoundException {
-//        connection = DriverManager.getConnection("", "", "");
-        Class.forName("com.mysql.jdbc.Driver");
+        try {
+            //        connection = DriverManager.getConnection("", "", "");
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
         connection = DriverManager.getConnection("jdbc:mysql://" + DB_URL + "/preciousdb", username, password);
         stmt = connection.createStatement();
     }
@@ -94,7 +102,9 @@ public class Database {
     }
 
     public void closeConnection() throws SQLException {
-        result.close();
+        if (result != null) {
+            result.close();
+        }
         stmt.close();
         connection.close();
     }
@@ -112,25 +122,44 @@ public class Database {
         result = stmt.executeQuery("");
     }
 
-    public void createDatabase() throws SQLException, ClassNotFoundException {
+    public void connectToDB() {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:" + LOCALE_DIRECTORY);
+            Class.forName(DRIVER_ONLINE).newInstance();
+            connection = DriverManager.getConnection("jdbc:mysql://" + DB_URL);
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+            System.out.println("e = " + e.getMessage());
+        }
+    }
+
+    public void createDatabase(int run) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlite:" + LOCALE_DIRECTORY);
             DatabaseMetaData meta = conn.getMetaData();
             System.out.println("The driver name is " + meta.getDriverName());
             System.out.println("A new database has been created.");
-
+            createTables(conn);
         } catch (SQLException e) {
-            System.out.println("sqlExc: " + e.getMessage() + " " + e.getCause());
-//            try {
-//                new File(LOCALE_DIRECTORY).mkdirs();
-//            } catch (Exception ex) {
-//                System.out.println(ex.getMessage());
-//            }
+            System.out.println("sqlExc: " + e.getMessage());
+            try {
+                new File(LOCALE_DIRECTORY).mkdirs();
+                if (run == 0) {
+                    createDatabase(1);
+                }
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-        createTables();
+        try {
+            conn.close();
+        } catch (SQLException | NullPointerException ex) {
+        }
+
     }
 
-    public void createTables() throws SQLException, ClassNotFoundException {
+    public void createTables(Connection conn) throws SQLException, ClassNotFoundException {
         ArrayList<ResultSetMetaData> meta = getColums();
         for (ResultSetMetaData i : meta) {
             String table = i.getTableName(1);
@@ -153,7 +182,6 @@ public class Database {
             sql += ")";
             System.out.println(sql);
             try {
-                Connection conn = DriverManager.getConnection("jdbc:sqlite:" + LOCALE_DIRECTORY);
                 stmt = conn.createStatement();
                 // create a new table
                 stmt.execute(sql);
