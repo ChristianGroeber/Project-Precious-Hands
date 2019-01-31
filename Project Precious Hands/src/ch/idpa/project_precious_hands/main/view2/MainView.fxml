@@ -271,7 +271,7 @@
                                                                <children>
                                                                   <Label text="Name" GridPane.rowIndex="1" />
                                                                   <Label text="Last Name" GridPane.rowIndex="2" />
-                                                                  <TextField fx:id="tytNameDonor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                  <TextField fx:id="txtNameDonor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                   <TextField fx:id="txtLastNameDonor" promptText="Type in the last Name of the Donor" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="8">
                                                                      <children>

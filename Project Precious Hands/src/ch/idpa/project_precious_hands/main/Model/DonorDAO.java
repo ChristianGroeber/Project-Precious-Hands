@@ -31,9 +31,9 @@ public class DonorDAO implements DAO<Donor> {
         }
         Database.getInstance().closeConnection();
     }
-    
-    public static DonorDAO getInstance(){
-        if(instance == null){
+
+    public static DonorDAO getInstance() {
+        if (instance == null) {
             try {
                 instance = new DonorDAO();
             } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
@@ -86,8 +86,14 @@ public class DonorDAO implements DAO<Donor> {
     public boolean insert(Donor t) {
         try {
             donors.add(t);
+            String sql = t.getSql();
+            Database db = Database.getInstance();
+            db.openConnection("", "");
+            db.getStatement().executeUpdate(sql);
+            db.closeConnection();
             return true;
-        } catch (Exception e) {
+        } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
+            System.out.println(e);
             return false;
         }
     }
@@ -107,4 +113,11 @@ public class DonorDAO implements DAO<Donor> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public int getOpenId(int id) {
+        if (!findById(id).isEmpty()) {
+            id++;
+            return getOpenId(id);
+        }
+        return id;
+    }
 }

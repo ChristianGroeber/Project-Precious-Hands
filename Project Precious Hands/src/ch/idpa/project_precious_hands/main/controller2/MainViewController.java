@@ -111,8 +111,6 @@ public class MainViewController implements Initializable {
     @FXML
     private ImageView imgChild;
     @FXML
-    private TextField tytNameDonor;
-    @FXML
     private TextField txtLastNameDonor;
     @FXML
     private TextField txtRoadDonor;
@@ -147,6 +145,8 @@ public class MainViewController implements Initializable {
     private ArrayList<Donation> arrDonations;
     @FXML
     private DatePicker txtUntil;
+    @FXML
+    private TextField txtNameDonor;
 
     public MainViewController() {
         try {
@@ -208,6 +208,9 @@ public class MainViewController implements Initializable {
             case ("btnSaveChild"):
                 saveChild();
                 break;
+            case ("btnSaveDonor"):
+                saveDonor();
+                break;
         }
     }
 
@@ -222,6 +225,20 @@ public class MainViewController implements Initializable {
         ChildDAO.getInstance().insert(c);
         arrChildren = (ArrayList<Child>) ChildDAO.getInstance().findAll();
         loadChildrenInTable();
+    }
+    
+    private void saveDonor(){
+        String name = txtNameDonor.getText();
+        String lastName = txtLastNameDonor.getText();
+        String road = txtRoadDonor.getText();
+        String postalCode = txtPostalCodeDonor.getText();
+        String town = txtLocationDonor.getText();
+        String email = txtEmailDonor.getText();
+        String phone = txtPhoneNumberDonor.getText();
+        Donor d = new Donor(name, lastName, road, postalCode, town, email, phone);
+        DonorDAO.getInstance().insert(d);
+        arrDonors = (ArrayList<Donor>) DonorDAO.getInstance().findAll();
+        loadDonorsInTable();
     }
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {

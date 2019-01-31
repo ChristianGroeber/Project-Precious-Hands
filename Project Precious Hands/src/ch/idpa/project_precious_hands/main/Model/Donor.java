@@ -10,6 +10,7 @@ package ch.idpa.project_precious_hands.main.Model;
  * @author olive
  */
 public class Donor {
+
     private int donorID;
     private String name;
     private String lastName;
@@ -19,6 +20,7 @@ public class Donor {
     private String email;
     private String phone;
     private int donationPlanID;
+    private String sql; 
 
     public Donor(int donorID, String name, String lastName, String street, String postalCode, String city, String email, String phone) {
         this.donorID = donorID;
@@ -32,6 +34,40 @@ public class Donor {
 //        this.donationPlanID = donationPlanID;
     }
 
+    public Donor(String name, String lastName, String road, String postalCode, String town, String email, String phone) {
+        this.name = name;
+        this.lastName = lastName;
+        this.street = road;
+        this.postalCode = postalCode;
+        this.city = town;
+        this.email = email;
+        this.phone = phone;
+        this.donorID = DonorDAO.getInstance().getOpenId(0);
+    }
+
+    public Donor(String name, String lastName, String street, String postalCode, String city, String email, String phone, int donationPlanID) {
+        this.name = name;
+        this.lastName = lastName;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.email = email;
+        this.phone = phone;
+        this.donationPlanID = donationPlanID;
+    }
+
+    public Donor(int donorID, String name, String lastName, String street, String postalCode, String city, String email, String phone, int donationPlanID) {
+        this.donorID = donorID;
+        this.name = name;
+        this.lastName = lastName;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.email = email;
+        this.phone = phone;
+        this.donationPlanID = donationPlanID;
+    }
+    
     public int getDonorID() {
         return donorID;
     }
@@ -104,4 +140,10 @@ public class Donor {
         this.donationPlanID = donationPlanID;
     }
     
+    public String getSql(){
+        sql = "INSERT INTO `preciousdb`.`donor` (`ID_Donor`, `Name`, `LastName`, `Street`, `Postal_Code`, `City`, `Email`, `Phone`) VALUES ('"
+                + donorID + "', '" + name + "', '" + lastName + "', '" + street + "', '" + postalCode + "', '" + city + "', '" + email + "', '" + phone + "');";
+        return this.sql;
+    }
+
 }
