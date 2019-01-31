@@ -5,8 +5,8 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.awt.image.BufferedImage;
 import java.util.Date;
-import javafx.scene.image.Image;
 
 /**
  *
@@ -18,9 +18,9 @@ public class Child {
     private String lastName;
     private char gender;
     private Date birthday;
-    private Image image;
+    private BufferedImage image;
 
-    public Child(int childID, String name, String lastName, char gender, Date birthday, Image image) {
+    public Child(int childID, String name, String lastName, char gender, Date birthday, BufferedImage image) {
         this.childID = childID;
         this.name = name;
         this.lastName = lastName;
@@ -78,11 +78,11 @@ public class Child {
         this.birthday = birthday;
     }
 
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(BufferedImage image) {
         this.image = image;
     }
     

@@ -6,6 +6,7 @@
 package ch.idpa.project_precious_hands.main.controller2;
 
 import ch.idpa.project_precious_hands.main.Model.Child;
+import ch.idpa.project_precious_hands.main.Model.ChildDAO;
 import ch.idpa.project_precious_hands.main.Model.Database;
 import ch.idpa.project_precious_hands.main.Model.Donation;
 import ch.idpa.project_precious_hands.main.Model.DonationDAO;
@@ -17,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -118,6 +120,19 @@ public class MainViewController implements Initializable {
     @FXML
     private TabPane tabPane;
 
+    private Database db;
+    private ArrayList<Child> arrChildren;
+    private ArrayList<Donor> arrDonors;
+    private ArrayList<Donation> arrDonations;
+
+    public MainViewController() {
+        try {
+            this.db = Database.getInstance();
+        } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -127,10 +142,17 @@ public class MainViewController implements Initializable {
             settings.setMenuBar(menuBar);
         }
         try {
-            Database.getInstance().createDatabase(0);
+            arrChildren = (ArrayList<Child>) new ChildDAO().findAll();
         } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        arrDonors = (ArrayList<Donor>) new DonorDAO().findAll();
+        arrDonations = (ArrayList<Donation>) new DonationDAO().findAll();
+        System.out.println(arrChildren.size());
+    }
+    
+    private void loadChildrenInTable(){
+        
     }
 
     @FXML

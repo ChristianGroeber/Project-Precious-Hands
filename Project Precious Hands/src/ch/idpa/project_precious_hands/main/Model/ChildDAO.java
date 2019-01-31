@@ -5,7 +5,9 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,15 +17,23 @@ import java.util.List;
  *
  * @author olive
  */
-public class ChildDAO implements DAO<Child>{
+public class ChildDAO implements DAO<Child> {
+
     private List<Child> children = new ArrayList<>();
 
     public ChildDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
-        /*        Database.getInstance().openConnection("preciousdb", "Os1t~T6E!5wi");
-        ResultSet rs = Database.getInstance().getTable("SELECT * FROM child;");
-        for (Object r : rs) {
-        
-        }*/
+        Database.getInstance().openConnection("", "");
+        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.child;");
+        int i = 0;
+        while (rs.next()) {
+            //            InputStream in = rs.getBlob("Image").getBinaryStream();
+            InputStream in = null;
+            BufferedImage img = null;
+            //                img = ImageIO.read(in);
+            Child c = new Child(rs.getInt("ID_Child"), rs.getString("Name"), rs.getString("LastName"), rs.getString("Gender").charAt(0), rs.getDate("Birthday"), img);
+            children.add(c);
+        }
+        System.out.println("rs = " + rs.first() + " " + rs.getString("ID_Child"));
         Database.getInstance().closeConnection();
     }
 
@@ -90,5 +100,5 @@ public class ChildDAO implements DAO<Child>{
     public int getOpenId() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
