@@ -16,6 +16,8 @@ import ch.idpa.project_precious_hands.main.Model.Donationplan;
 import ch.idpa.project_precious_hands.main.Model.DonationplanDAO;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
+import ch.idpa.project_precious_hands.main.Model.User;
+import ch.idpa.project_precious_hands.main.Model.UserDAO;
 import ch.idpa.project_precious_hands.main.Starter;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
@@ -42,6 +44,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -114,6 +118,21 @@ public class MainViewController implements Initializable {
     private TableColumn<Donation, Date> colDateDonated;
     //_________END Table Donations_____________________
 
+    //_________Table Users_____________________________
+    @FXML
+    private TableView<User> tblUsers;
+    @FXML
+    private TableColumn<User, Integer> colIDUser;
+    @FXML
+    private TableColumn<User, String> colUserName;
+    @FXML
+    private TableColumn<User, String> colUserLastName;
+    @FXML
+    private TableColumn<User, Date> colUserDateAdded;
+    @FXML
+    private TableColumn<User, Boolean> colUserIsAdmin;
+    //________END Table Users___________________________
+
     @FXML
     private TextField txtNameChild;
     @FXML
@@ -156,6 +175,7 @@ public class MainViewController implements Initializable {
     private ArrayList<Donor> arrDonors;
     private ArrayList<Donation> arrDonations;
     private ArrayList<Donationplan> arrDonationplans;
+    private ArrayList<User> arrUsers;
     @FXML
     private DatePicker txtUntil;
     @FXML
@@ -176,6 +196,16 @@ public class MainViewController implements Initializable {
     private ComboBox<String> cmbDonations;
     @FXML
     private DatePicker txtDateDonated;
+    @FXML
+    private Tab tabUsers;
+    @FXML
+    private Button btnSaveUser;
+    @FXML
+    private TextField txtUserName;
+    @FXML
+    private RadioButton radUserIsAdmin;
+    @FXML
+    private TextField txtUserLastName;
 
     public MainViewController() {
         try {
@@ -205,6 +235,11 @@ public class MainViewController implements Initializable {
         fillCmbDonors(arrDonors);
         fillCmbChildren(arrChildren);
         fillCmbDonationplans(arrDonationplans);
+        if (UserDAO.getInstance().getLoggedInUser().isAdmin()) {
+            tabUsers.setDisable(false);
+            arrUsers = (ArrayList<User>) UserDAO.getInstance().findAll();
+            loadUsersInTable();
+        }
         loadChildrenInTable();
         loadDonorsInTable();
         loadDonationplansInTable();
@@ -268,6 +303,16 @@ public class MainViewController implements Initializable {
         tblDonations.setItems(data);
     }
 
+    private void loadUsersInTable() {
+        ObservableList<User> data = FXCollections.observableArrayList(arrUsers);
+        colIDUser.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        colUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colUserLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colUserDateAdded.setCellValueFactory(new PropertyValueFactory<>("dateAdded"));
+        colUserIsAdmin.setCellValueFactory(new PropertyValueFactory<>("isAdmin"));
+        tblUsers.setItems(data);
+    }
+
     private void fillCmbDonors(ArrayList<Donor> donors) {
         ObservableList<String> options = FXCollections.observableArrayList();
         for (Donor i : donors) {
@@ -321,6 +366,9 @@ public class MainViewController implements Initializable {
                 break;
             case ("btnSaveDonationplan"):
                 saveDonationplan();
+                break;
+            case ("btnSaveUser"):
+                saveUser();
                 break;
         }
     }
@@ -383,6 +431,14 @@ public class MainViewController implements Initializable {
         DonationDAO.getInstance().insert(d);
         arrDonations = (ArrayList<Donation>) DonationDAO.getInstance().findAll();
         loadDonationsInTable();
+    }
+
+    private void saveUser() {
+        java.sql.Date dateCreated = convertUtilToSql(new Date());
+        User u = new User(txtUserLastName.getText(), txtUserName.getText(), "1234", dateCreated, radUserIsAdmin.isSelected());
+        UserDAO.getInstance().insert(u);
+        arrUsers = (ArrayList<User>) UserDAO.getInstance().findAll();
+        loadUsersInTable();
     }
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
@@ -517,5 +573,14 @@ public class MainViewController implements Initializable {
     @FXML
     private void logout(ActionEvent event) throws IOException {
         new Starter().changeScreen("view2", "LoginView", "Login");
+    }
+
+    @FXML
+    private void addUser(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void btnRemoveRights(ActionEvent event) {
     }
 }

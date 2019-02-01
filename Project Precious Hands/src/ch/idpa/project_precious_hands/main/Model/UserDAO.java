@@ -19,6 +19,7 @@ public class UserDAO implements DAO<User> {
 
     List<User> users = new ArrayList<>();
     private static UserDAO instance;
+    private static User loggedInUser;
 
     public static UserDAO getInstance() {
         if (instance == null) {
@@ -26,21 +27,41 @@ public class UserDAO implements DAO<User> {
         }
         return instance;
     }
+    
+    private void usersArray() throws SQLException, FileNotFoundException, ClassNotFoundException{
+        Database.getInstance().openConnection("", "");
+        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.userdata;");
+        while (rs.next()) {
+            User c = new User(rs.getInt("ID_User"), rs.getString("Name"), rs.getString("LastName"), rs.getDate("DateAdded"), rs.getBoolean("Is_Admin"));
+            users.add(c);
+        }
+        Database.getInstance().closeConnection();
+
+    }
+    
+    private void loginUser(ResultSet rs) throws SQLException{
+        User u = new User(rs.getInt("ID_User"), rs.getString("Name"), rs.getString("LastName"), rs.getDate("DateAdded"), rs.getBoolean("Is_Admin"));
+        loggedInUser = u;
+    }
 
     @Override
     public List<User> findAll() {
         return users;
     }
 
-    public boolean correctValues(String username, String password) throws SQLException, FileNotFoundException, ClassNotFoundException {
-        String query = "SELECT ID_User FROM preciousdb.userdata WHERE Passwort = '" + password + "' AND Name = '" + username + "'";
+    public boolean  correctValues(String username, String password) throws SQLException, FileNotFoundException, ClassNotFoundException {
+        String query = "SELECT * FROM preciousdb.userdata WHERE Passwort = '" + password + "' AND Name = '" + username + "'";
         Database db = Database.getInstance();
         db.openConnection("", "");
         ResultSet rs = Database.getInstance().getTable(query);
         rs.next();
         try {
-            System.out.println(rs.getInt("ID_User"));
+            System.out.println(rs.getInt("ID_User") + ", " + rs.getBoolean("Is_Admin"));
+            loginUser(rs);
             db.closeConnection();
+            if(loggedInUser.isAdmin()){
+                usersArray();
+            }
             return true;
         } catch (SQLException e) {
             System.out.println("Error while logging in " + e.getMessage());
@@ -82,10 +103,16 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public boolean insert(User t) {
-        try {
+         try {
             users.add(t);
+            String sql = t.getSql();
+            Database db = Database.getInstance();
+            db.openConnection("", "");
+            db.getStatement().executeUpdate(sql);
+            db.closeConnection();
             return true;
-        } catch (Exception e) {
+        } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
+            System.out.println("Error while inserting: " + e.toString());
             return false;
         }
     }
@@ -103,6 +130,22 @@ public class UserDAO implements DAO<User> {
     @Override
     public int getOpenId() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getOpenId(int id) {
+        if(findById(id) != null){
+            id++;
+            return getOpenId(id);
+        }
+        return id;
+    }
+    
+    public User getLoggedInUser(){
+        return loggedInUser;
+    }
+    
+    public void logoutUser(){
+        loggedInUser = null;
     }
 
 }
