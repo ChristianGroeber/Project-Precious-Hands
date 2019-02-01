@@ -44,7 +44,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -479,7 +478,7 @@ public class MainViewController implements Initializable {
     }
 
     private void loadWindow(String window, String title) throws IOException {
-        Starter start = new Starter();
+        Starter start = Starter.getInstance();
         start.changeScreen("view2", window, title);
 
     }
@@ -572,7 +571,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void logout(ActionEvent event) throws IOException {
-        new Starter().changeScreen("view2", "LoginView", "Login");
+         Starter.getInstance().changeScreen("view2", "LoginView", "Login");
     }
 
     @FXML
