@@ -5,29 +5,38 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.text.ParseException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author olive
  */
 public class Donation {
-    private int donationID;
-    private int donorID;
-    private int recieverID;
-    private int amount;
-    private Date receptionDate;
-    
-    public Donation(){}
 
-    public Donation(int donationID, int donorID, int recieverID, int amount, Date receptionDate) {
+    private int donationID;
+    private int donationplanID;
+    private Date receptionDate;
+    private String sql;
+
+    public Donation() {
+    }
+
+    public Donation(int donationID, int donationplanID, Date receptionDate) {
         this.donationID = donationID;
-        this.donorID = donorID;
-        this.recieverID = recieverID;
-        this.amount = amount;
+        this.donationplanID = donationplanID;
         this.receptionDate = receptionDate;
     }
+
+    public Donation(int donationplanID, Date receptionDate) {
+        this.donationplanID = donationplanID;
+        this.receptionDate = receptionDate;
+        this.donationID = DonationDAO.getInstance().getOpenId(1);
+    }
     
+
     public int getDonationID() {
         return donationID;
     }
@@ -36,28 +45,12 @@ public class Donation {
         this.donationID = donationID;
     }
 
-    public int getDonorID() {
-        return donorID;
+    public int getDonationplanID() {
+        return donationplanID;
     }
 
-    public void setDonorID(int donorID) {
-        this.donorID = donorID;
-    }
-
-    public int getRecieverID() {
-        return recieverID;
-    }
-
-    public void setRecieverID(int recieverID) {
-        this.recieverID = recieverID;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setDonationplanID(int donationplanID) {
+        this.donationplanID = donationplanID;
     }
 
     public Date getReceptionDate() {
@@ -67,6 +60,10 @@ public class Donation {
     public void setReceptionDate(Date receptionDate) {
         this.receptionDate = receptionDate;
     }
-    
-    
+
+    public String getSql() {
+        sql = "INSERT INTO `preciousdb`.`donation` ('ID_Donation', 'ReceptionDate', 'ID_Donationplan') VALUES ('" + donationID + "', '" + receptionDate + "', '" + donationplanID + "');";
+        return sql;
+    }
+
 }

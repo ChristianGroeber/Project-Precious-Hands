@@ -5,9 +5,7 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,14 +26,14 @@ public class DonationDAO implements DAO<Donation> {
         Database.getInstance().openConnection("", "");
         ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.donation;");
         while (rs.next()) {
-            Donation c = new Donation(rs.getInt("ID_Donation"), rs.getInt("ID_Donor"), rs.getInt("ID_Receiver"), rs.getInt("Amount"), rs.getDate("ReceptionDate"));
+            Donation c = new Donation(rs.getInt("ID_Donation"), rs.getInt("ID_Donationplan"), rs.getDate("ReceptionDate"));
             donations.add(c);
         }
         Database.getInstance().closeConnection();
     }
-    
-    public static DonationDAO getInstance(){
-        if(instance == null){
+
+    public static DonationDAO getInstance() {
+        if (instance == null) {
             try {
                 instance = new DonationDAO();
             } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
@@ -79,8 +77,13 @@ public class DonationDAO implements DAO<Donation> {
     public boolean insert(Donation t) {
         try {
             donations.add(t);
+            String sql = t.getSql();
+            Database db = Database.getInstance();
+            db.openConnection("", "");
+            db.getStatement().executeUpdate(sql);
+            db.closeConnection();
             return true;
-        } catch (Exception e) {
+        } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
             return false;
         }
     }
@@ -93,6 +96,14 @@ public class DonationDAO implements DAO<Donation> {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public int getOpenId(int id) {
+        if (findById(id) != null) {
+            id++;
+            return getOpenId(id);
+        }
+        return id;
     }
 
     @Override

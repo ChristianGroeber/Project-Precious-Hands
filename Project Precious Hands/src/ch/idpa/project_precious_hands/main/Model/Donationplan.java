@@ -8,6 +8,9 @@ package ch.idpa.project_precious_hands.main.Model;
 import java.io.FileNotFoundException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,7 +52,7 @@ public class Donationplan {
         } catch (FileNotFoundException | ClassNotFoundException | SQLException e) {
         }
     }
-    
+
     public int getDonationPlanID() {
         return donationPlanID;
     }
@@ -107,12 +110,24 @@ public class Donationplan {
     }
 
     String getSql() {
-        if(dateCreated == null){
+        if (dateCreated == null) {
             dateCreated = new java.sql.Date(new java.util.Date().getTime());
         }
         sql = "INSERT INTO `preciousdb`.`donationplan` (`ID_DonationPlan`, `Amount`, `ID_Donor`, `ID_Child`, `Duration`, `Interval`, `DateCreated`) "
                 + "VALUES ('" + donationPlanID + "', '" + amount + "', '" + donorID + "', '" + childID + "', '" + duration + "', '," + interval + "', '" + dateCreated + "');";
         return this.sql;
+    }
+
+    @Override
+    public String toString() {
+        Donor donating = DonorDAO.getInstance().findById(getDonorID());
+        Child donatingTo = null;
+        try {
+            donatingTo = ChildDAO.getInstance().findById(getChildID());
+        } catch (ParseException ex) {
+            Logger.getLogger(Donationplan.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return donationPlanID + " " + donating.getName() + " " + donating.getLastName() + " donates to " + donatingTo.getName() + " " + donatingTo.getLastName();
     }
 
 }

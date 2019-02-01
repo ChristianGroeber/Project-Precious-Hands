@@ -104,6 +104,17 @@ public class MainViewController implements Initializable {
     private TableColumn<Donor, String> colLastNameDonor;
     //_________END Table Donors_______________________
 
+    //_________Table Donations________________________
+    @FXML
+    private TableView<Donation> tblDonations;
+    @FXML
+    private TableColumn<Donation, Integer> colIDDonation;
+    @FXML
+    private TableColumn<Donation, Integer> colIDDonationplan2;
+    @FXML
+    private TableColumn<Donation, Date> colDateDonated;
+    //_________END Table Donations_____________________
+
     @FXML
     private TextField txtNameChild;
     @FXML
@@ -158,6 +169,14 @@ public class MainViewController implements Initializable {
     private ComboBox<String> cmbDonors;
     @FXML
     private ComboBox<String> cmbChildren;
+    @FXML
+    private Tab tabDonationplans;
+    @FXML
+    private Button btnSaveDonation;
+    @FXML
+    private ComboBox<String> cmbDonations;
+    @FXML
+    private DatePicker txtDateDonated;
 
     public MainViewController() {
         try {
@@ -184,11 +203,13 @@ public class MainViewController implements Initializable {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         fillCmbInterval();
-        fillCmbDonors();
-        fillCmbChildren();
+        fillCmbDonors(arrDonors);
+        fillCmbChildren(arrChildren);
+        fillCmbDonationplans(arrDonationplans);
         loadChildrenInTable();
         loadDonorsInTable();
         loadDonationplansInTable();
+        loadDonationsInTable();
     }
 
     private void fillCmbInterval() {
@@ -232,7 +253,7 @@ public class MainViewController implements Initializable {
 
     private void loadDonationplansInTable() {
         ObservableList<Donationplan> data = FXCollections.observableArrayList(arrDonationplans);
-        colIDDonationplan.setCellValueFactory(new PropertyValueFactory<>("ID_Donationplan"));
+        colIDDonationplan.setCellValueFactory(new PropertyValueFactory<>("onationPlanID"));
         colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         colDonor.setCellValueFactory(new PropertyValueFactory<>("donorID"));
         colChild.setCellValueFactory(new PropertyValueFactory<>("childID"));
@@ -240,8 +261,15 @@ public class MainViewController implements Initializable {
         tblDonationplans.setItems(data);
     }
 
-    private void fillCmbDonors() {
-        ArrayList<Donor> donors = arrDonors;
+    private void loadDonationsInTable() {
+        ObservableList<Donation> data = FXCollections.observableArrayList(arrDonations);
+        colIDDonation.setCellValueFactory(new PropertyValueFactory<>("donationID"));
+        colIDDonationplan2.setCellValueFactory(new PropertyValueFactory<>("donationplanID"));
+        colDateDonated.setCellValueFactory(new PropertyValueFactory<>("receptionDate"));
+        tblDonations.setItems(data);
+    }
+
+    private void fillCmbDonors(ArrayList<Donor> donors) {
         ObservableList<String> options = FXCollections.observableArrayList();
         for (Donor i : donors) {
             options.add(i.getDonorID() + " " + i.getName() + " " + i.getLastName());
@@ -249,13 +277,20 @@ public class MainViewController implements Initializable {
         cmbDonors.setItems(options);
     }
 
-    private void fillCmbChildren() {
-        ArrayList<Child> children = arrChildren;
+    private void fillCmbChildren(ArrayList<Child> children) {
         ObservableList<String> options = FXCollections.observableArrayList();
         for (Child i : children) {
             options.add(i.getChildID() + " " + i.getName() + " " + i.getLastName());
         }
         cmbChildren.setItems(options);
+    }
+
+    private void fillCmbDonationplans(ArrayList<Donationplan> donationplans) {
+        ObservableList<String> options = FXCollections.observableArrayList();
+        for (Donationplan i : donationplans) {
+            options.add(i.toString());
+        }
+        cmbDonations.setItems(options);
     }
 
     private void fillUniversalCombobox(ArrayList<Choosable> arr, ComboBox cmb) {
@@ -340,14 +375,20 @@ public class MainViewController implements Initializable {
         }
     }
 
+    private void saveDonation() {
+        LocalDate dt = txtDateDonated.getValue();
+        Instant instant = Instant.from(dt.atStartOfDay(ZoneId.systemDefault()));
+        Date date = Date.from(instant);
+        java.sql.Date sDate = convertUtilToSql(date);
+        Donation d = new Donation(Integer.parseInt(cmbDonations.getValue().split(" ")[0]), sDate);
+        DonationDAO.getInstance().insert(d);
+        arrDonations = (ArrayList<Donation>) DonationDAO.getInstance().findAll();
+        loadDonationsInTable();
+    }
+
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
         java.sql.Date sDate = new java.sql.Date(uDate.getTime());
         return sDate;
-    }
-
-    private void saveDonation() {
-        String amount = txtAmount.getText();
-        List<Donor> donor = DonorDAO.getInstance().findByName(txtDonorChooser.getText());
     }
 
     private void chooseChild(ActionEvent event) throws IOException {
@@ -397,7 +438,7 @@ public class MainViewController implements Initializable {
 
             cmbChildren.setValue(item.getChildID() + " " + item.getName() + " " + item.getLastName());
             SingleSelectionModel<Tab> mod = tabPane.getSelectionModel();
-            mod.select(tabDonations);
+            mod.select(tabDonationplans);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Please select a row");
         }
@@ -409,11 +450,13 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void btnDonationDone(ActionEvent event) {
+    private void btnDonationDone(ActionEvent event) throws ParseException {
         TablePosition pos = tblDonationplans.getSelectionModel().getSelectedCells().get(0);
         int row = pos.getRow();
         Donationplan item = tblDonationplans.getItems().get(row);
-        
+        cmbDonations.setValue(item.toString());
+        SingleSelectionModel<Tab> mod = tabPane.getSelectionModel();
+        mod.select(tabDonations);
     }
 
     private int getAmountDonated() {
@@ -432,5 +475,43 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void addDonationToDonor(ActionEvent event) {
+    }
+
+    @FXML
+    private void searchDonor(ActionEvent event) {
+        String val = cmbDonors.getValue();
+        ArrayList<Donor> newArr = new ArrayList<>();
+        for (Donor i : arrDonors) {
+            if (Integer.toString(i.getDonorID()).equals(val)) {
+                newArr.add(i);
+            } else if (i.getName().equals(val)) {
+                newArr.add(i);
+            } else if (i.getLastName().equals(val)) {
+                newArr.add(i);
+            }
+        }
+        fillCmbDonors(newArr);
+        cmbDonors.show();
+    }
+
+    @FXML
+    private void searchChild(ActionEvent event) {
+        String val = cmbChildren.getValue();
+        ArrayList<Child> newArr = new ArrayList<>();
+        for (Child i : arrChildren) {
+            if (Integer.toString(i.getChildID()).equals(val)) {
+                newArr.add(i);
+            } else if (i.getName().equals(val)) {
+                newArr.add(i);
+            } else if (i.getLastName().equals(val)) {
+                newArr.add(i);
+            }
+        }
+        fillCmbChildren(newArr);
+        cmbChildren.show();
+    }
+
+    @FXML
+    private void newDonationPlan(ActionEvent event) {
     }
 }
