@@ -5,6 +5,9 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.io.FileNotFoundException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +18,34 @@ import java.util.List;
 public class UserDAO implements DAO<User> {
 
     List<User> users = new ArrayList<>();
+    private static UserDAO instance;
+
+    public static UserDAO getInstance() {
+        if (instance == null) {
+            instance = new UserDAO();
+        }
+        return instance;
+    }
 
     @Override
     public List<User> findAll() {
         return users;
+    }
+
+    public boolean correctValues(String username, String password) throws SQLException, FileNotFoundException, ClassNotFoundException {
+        String query = "SELECT ID_User FROM preciousdb.userdata WHERE Passwort = '" + password + "' AND Name = '" + username + "'";
+        Database db = Database.getInstance();
+        db.openConnection("", "");
+        ResultSet rs = Database.getInstance().getTable(query);
+        rs.next();
+        try {
+            System.out.println(rs.getInt("ID_User"));
+            db.closeConnection();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error while logging in " + e.getMessage());
+            return false;
+        }
     }
 
     @Override

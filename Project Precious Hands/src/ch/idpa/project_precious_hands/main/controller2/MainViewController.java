@@ -29,7 +29,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -513,5 +512,10 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void newDonationPlan(ActionEvent event) {
+    }
+
+    @FXML
+    private void logout(ActionEvent event) throws IOException {
+        new Starter().changeScreen("view2", "LoginView", "Login");
     }
 }

@@ -27,7 +27,7 @@ public class Starter extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        changeScreen("view2", "MainView", "Precious Hands");
+        changeScreen("view2", "LoginView", "Precious Hands");
     }
 
     public void changeScreen(String pkg, String window, String title) throws IOException {
