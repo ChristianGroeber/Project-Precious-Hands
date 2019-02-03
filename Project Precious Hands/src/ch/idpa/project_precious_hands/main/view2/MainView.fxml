@@ -332,7 +332,8 @@
                                                   <buttons>
                                                       <Button mnemonicParsing="false" onAction="#donationDetail" text="Detail" />
                                                       <Button mnemonicParsing="false" onAction="#btnDonationDone" text="Donated" />
-                                                      <Button mnemonicParsing="false" onAction="#checkOpenDonations" text="Check open Donations" />
+                                                      <Button mnemonicParsing="false" onAction="#checkOpenDonations" text="Check open Donations" wrapText="true" />
+                                                      <Button mnemonicParsing="false" onAction="#sendReminder" text="Send reminder" wrapText="true" />
                                                   </buttons>
                                                 </ButtonBar>
                                              </children>

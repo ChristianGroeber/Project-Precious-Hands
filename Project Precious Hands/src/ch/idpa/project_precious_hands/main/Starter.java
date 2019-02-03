@@ -63,10 +63,10 @@ public class Starter extends Application {
     }
     
     private void loadMyStuff() throws ParseException, SQLException, FileNotFoundException, ClassNotFoundException{
-        ChildDAO.getInstance();
-        DonorDAO.getInstance();
-        DonationDAO.getInstance();
-        DonationplanDAO.getInstance();
+//        ChildDAO.getInstance();
+//        DonorDAO.getInstance();
+//        DonationDAO.getInstance();
+//        DonationplanDAO.getInstance();
     }
 
     @Override

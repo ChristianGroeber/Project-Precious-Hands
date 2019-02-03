@@ -585,13 +585,11 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void checkOpenDonations(ActionEvent event) throws SQLException, FileNotFoundException, ClassNotFoundException {
-        for (Donationplan i : arrDonationplans) {
-            System.out.println(i.getSql());
-        }
         arrDonationplans = DonationplanDAO.getInstance().getOpenDonations();
-        for (Donationplan i : arrDonationplans) {
-            System.out.println(i.getSql());
-        }
         loadDonationplansInTable();
+    }
+
+    @FXML
+    private void sendReminder(ActionEvent event) {
     }
 }
