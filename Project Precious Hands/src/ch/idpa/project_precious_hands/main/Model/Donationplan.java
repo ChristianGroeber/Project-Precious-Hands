@@ -109,7 +109,7 @@ public class Donationplan {
         this.dateCreated = dateCreated;
     }
 
-    String getSql() {
+    public String getSql() {
         if (dateCreated == null) {
             dateCreated = new java.sql.Date(new java.util.Date().getTime());
         }

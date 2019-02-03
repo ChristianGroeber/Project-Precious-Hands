@@ -40,7 +40,7 @@ public class DonationIntervalTest {
             Logger.getLogger(DonationIntervalTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         DonationInterval inter = new DonationInterval("monthly", 1);
-        System.out.println(inter.getNextPayment(testing));
+        System.out.println(inter.getNextPayment((java.sql.Date) testing));
     }
     
 }

@@ -571,7 +571,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void logout(ActionEvent event) throws IOException {
-         Starter.getInstance().changeScreen("view2", "LoginView", "Login");
+        Starter.getInstance().changeScreen("view2", "LoginView", "Login");
     }
 
     @FXML
@@ -581,5 +581,17 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void btnRemoveRights(ActionEvent event) {
+    }
+
+    @FXML
+    private void checkOpenDonations(ActionEvent event) throws SQLException, FileNotFoundException, ClassNotFoundException {
+        for (Donationplan i : arrDonationplans) {
+            System.out.println(i.getSql());
+        }
+        arrDonationplans = DonationplanDAO.getInstance().getOpenDonations();
+        for (Donationplan i : arrDonationplans) {
+            System.out.println(i.getSql());
+        }
+        loadDonationplansInTable();
     }
 }

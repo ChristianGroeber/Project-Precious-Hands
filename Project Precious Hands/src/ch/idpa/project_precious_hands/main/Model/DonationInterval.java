@@ -14,6 +14,7 @@ import java.util.Date;
  * @author chris
  */
 public class DonationInterval {
+
     private final String description;
     private final double amountMonths;
 
@@ -29,22 +30,28 @@ public class DonationInterval {
     public double getAmountMonths() {
         return amountMonths;
     }
-    
-    public Date getNextPayment(Date lastDonation){
+
+    public java.util.Date getNextPayment(java.sql.Date lastDonation) {
+        java.util.Date uDate = new java.util.Date(lastDonation.getTime());
         Calendar c = Calendar.getInstance();
-        c.setTime(lastDonation);
+        c.setTime(uDate);
         c.add(Calendar.DATE, (int) (amountMonths * 30));
         Date nextPayment = c.getTime();
-        if(c.get(DAY_OF_MONTH) <= 15){
-            c.add(Calendar.DATE, - c.get(DAY_OF_MONTH) + 1);
-        }else{
+        if (c.get(DAY_OF_MONTH) <= 15) {
+            c.add(Calendar.DATE, -c.get(DAY_OF_MONTH) + 1);
+        } else {
             c.add(Calendar.DATE, c.get(DAY_OF_MONTH) - 30);
         }
         return c.getTime();
     }
-    
-    public boolean isThisInterval(String testDescription){
+
+    public boolean donationIsDueThisMonth(java.sql.Date nextDonation) {
+        
+        return false;
+    }
+
+    public boolean isThisInterval(String testDescription) {
         return testDescription.equals(description);
     }
-    
+
 }
