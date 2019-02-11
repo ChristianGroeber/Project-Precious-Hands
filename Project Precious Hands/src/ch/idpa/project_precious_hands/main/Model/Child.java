@@ -5,28 +5,46 @@
  */
 package ch.idpa.project_precious_hands.main.Model;
 
+import java.awt.image.BufferedImage;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import javafx.scene.image.Image;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author olive
  */
-public class Child {
+public class Child extends Choosable{
     private int childID;
     private String name;
     private String lastName;
     private char gender;
     private Date birthday;
-    private Image image;
-
-    public Child(int childID, String name, String lastName, char gender, Date birthday, Image image) {
+    private BufferedImage image;
+    private String sql;
+    
+    public Child(int childID, String name, String lastName, char gender, Date birthday, BufferedImage image){
         this.childID = childID;
         this.name = name;
         this.lastName = lastName;
         this.gender = gender;
         this.birthday = birthday;
         this.image = image;
+    }
+    
+    public Child(String name, String lastName, char gender, Date birthday, BufferedImage image){
+        this.name = name;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.image = image;
+        try {
+            this.childID = ChildDAO.getInstance().getOpenId(1);
+        } catch (ParseException ex) {
+            Logger.getLogger(Child.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Child(int childID, String name, String lastName, char gender, Date birthday) {
@@ -78,15 +96,16 @@ public class Child {
         this.birthday = birthday;
     }
 
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(BufferedImage image) {
         this.image = image;
     }
     
-    
-    
-    
+    public String getSql(){
+        sql = "INSERT INTO `preciousdb`.`child` (`ID_Child`, `Name`, `LastName`, `Gender`, `Birthday`) VALUES ('" + childID + "', '" + name + "', '" + lastName + "', '" + gender + "', '" + birthday + "');";
+        return this.sql;
+    }
 }

@@ -13,14 +13,14 @@ public class Reciever {
     private int recieverID;
     private int donorID;
     private int childID;
+    private int donationPlanID;
 
-    public Reciever(int recieverID, int donorID, int childID) {
+    public Reciever(int recieverID, int donorID, int childID, int donationPlanID) {
         this.recieverID = recieverID;
         this.donorID = donorID;
         this.childID = childID;
+        this.donationPlanID = donationPlanID;
     }
-
-    
     
     public int getRecieverID() {
         return recieverID;

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface DAO<T> {
     List<T> findAll();
-    List<T> findById(int id);
+    T findById(int id);
     List<T> findByName(String name);
     
     boolean update(T t);
@@ -23,4 +23,6 @@ public interface DAO<T> {
     
     
     boolean delete(T t);
+    
+    int getOpenId();
 }
