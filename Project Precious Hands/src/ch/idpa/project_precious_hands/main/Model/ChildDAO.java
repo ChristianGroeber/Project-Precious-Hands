@@ -29,7 +29,7 @@ public class ChildDAO implements DAO<Child> {
 
     public ChildDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
         Database.getInstance().openConnection("", "");
-        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.child;");
+        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.child WHERE allowed = '1'");
         while (rs.next()) {
             //            InputStream in = rs.getBlob("Image").getBinaryStream();
             InputStream in = null;

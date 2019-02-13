@@ -5,10 +5,6 @@
  */
 package ch.idpa.project_precious_hands.main;
 
-import ch.idpa.project_precious_hands.main.Model.ChildDAO;
-import ch.idpa.project_precious_hands.main.Model.DonationDAO;
-import ch.idpa.project_precious_hands.main.Model.DonationplanDAO;
-import ch.idpa.project_precious_hands.main.Model.DonorDAO;
 import com.sun.javafx.application.LauncherImpl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -103,8 +99,8 @@ public class Starter extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        LauncherImpl.launchApplication(Starter.class, MyPreloader.class, args);
-//        launch(args);
+//        LauncherImpl.launchApplication(Starter.class, MyPreloader.class, args);
+        launch(args);
     }
 
 }

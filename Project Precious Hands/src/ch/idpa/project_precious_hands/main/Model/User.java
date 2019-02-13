@@ -12,7 +12,7 @@ import java.sql.Date;
  * @author olive
  */
 public class User {
-    private int UserID;
+    private int userID;
     private String name;
     private String surname;
     private String password;
@@ -20,7 +20,7 @@ public class User {
     private final Date dateAdded;
 
     public User(int UserID, String name, String surname, String password, Date dateAdded, boolean isAdmin) {
-        this.UserID = UserID;
+        this.userID = UserID;
         this.name = name;
         this.surname = surname;
         this.password = password;
@@ -29,7 +29,7 @@ public class User {
     }
 
     public User(int UserID, String name, String surname, Date dateAdded, boolean isAdmin) {
-        this.UserID = UserID;
+        this.userID = UserID;
         this.name = name;
         this.surname = surname;
         this.isAdmin = isAdmin;
@@ -42,7 +42,7 @@ public class User {
         this.password = password;
         this.isAdmin = isAdmin;
         this.dateAdded = dateAdded;
-        UserID = UserDAO.getInstance().getOpenId(1);
+        userID = UserDAO.getInstance().getOpenId(1);
     }
 
     public String getName() {
@@ -70,11 +70,11 @@ public class User {
     }
 
     public int getUserID() {
-        return UserID;
+        return userID;
     }
 
     public void setUserID(int UserID) {
-        this.UserID = UserID;
+        this.userID = UserID;
     }
 
     public boolean isAdmin() {
@@ -95,6 +95,6 @@ public class User {
             adm = "1";
         }
         return "INSERT INTO `preciousdb`.`userdata` (`ID_User`, `Name`, `LastName`, `Passwort`, `Is_Admin`, `DateAdded`) "
-                + "VALUES ('" + UserID + "', '" + surname + "', '" + name + "', '" + password + "', '" + adm + "', '" + dateAdded + "');";
+                + "VALUES ('" + userID + "', '" + surname + "', '" + name + "', '" + password + "', '" + adm + "', '" + dateAdded + "');";
     }
 }
