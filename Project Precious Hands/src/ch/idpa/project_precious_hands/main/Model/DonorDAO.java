@@ -24,7 +24,7 @@ public class DonorDAO implements DAO<Donor> {
 
     public DonorDAO() throws SQLException, FileNotFoundException, ClassNotFoundException {
         Database.getInstance().openConnection("", "");
-        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.donor;");
+        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.donor WHERE allowed = '1'");
         while (rs.next()) {
             Donor c = new Donor(rs.getInt("ID_Donor"), rs.getString("Name"), rs.getString("LastName"), rs.getString("Street"), rs.getString("Postal_Code"), rs.getString("City"), rs.getString("Email"), rs.getString("Phone"));
             donors.add(c);

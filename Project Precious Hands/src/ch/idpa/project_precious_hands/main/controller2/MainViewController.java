@@ -206,6 +206,8 @@ public class MainViewController implements Initializable {
     @FXML
     private TextField txtUserLastName;
 
+    private final ArrayList<TextField> textFields = new ArrayList<>();
+
     public MainViewController() {
         try {
             this.db = Database.getInstance();
@@ -219,6 +221,7 @@ public class MainViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        addTextFieldsInArray();
         if (settings != null) {
             settings.setMenuBar(menuBar);
         }
@@ -286,7 +289,7 @@ public class MainViewController implements Initializable {
 
     private void loadDonationplansInTable() {
         ObservableList<Donationplan> data = FXCollections.observableArrayList(arrDonationplans);
-        colIDDonationplan.setCellValueFactory(new PropertyValueFactory<>("onationPlanID"));
+        colIDDonationplan.setCellValueFactory(new PropertyValueFactory<>("donationPlanID"));
         colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         colDonor.setCellValueFactory(new PropertyValueFactory<>("donorID"));
         colChild.setCellValueFactory(new PropertyValueFactory<>("childID"));
@@ -306,7 +309,7 @@ public class MainViewController implements Initializable {
         ObservableList<User> data = FXCollections.observableArrayList(arrUsers);
         colIDUser.setCellValueFactory(new PropertyValueFactory<>("userID"));
         colUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colUserLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colUserLastName.setCellValueFactory(new PropertyValueFactory<>("surname"));
         colUserDateAdded.setCellValueFactory(new PropertyValueFactory<>("dateAdded"));
         colUserIsAdmin.setCellValueFactory(new PropertyValueFactory<>("isAdmin"));
         tblUsers.setItems(data);
@@ -344,7 +347,6 @@ public class MainViewController implements Initializable {
         cmb.setItems(options);
     }
 
-    @FXML
     private void newDonation(ActionEvent event) {
         Donation donation = new Donation();
 
@@ -370,6 +372,7 @@ public class MainViewController implements Initializable {
                 saveUser();
                 break;
         }
+        clearTextFields();
     }
 
     private void saveChild() throws ParseException {
@@ -379,10 +382,14 @@ public class MainViewController implements Initializable {
         Instant instant = Instant.from(bd.atStartOfDay(ZoneId.systemDefault()));
         Date date = Date.from(instant);
         java.sql.Date sDate = convertUtilToSql(date);
-        Child c = new Child(name, lastName, 'm', sDate, new BufferedImage(1, 1, TYPE_INT_ARGB));
-        ChildDAO.getInstance().insert(c);
-        arrChildren = (ArrayList<Child>) ChildDAO.getInstance().findAll();
-        loadChildrenInTable();
+        if (!(name.equals("") || lastName.equals(""))) {
+            Child c = new Child(name, lastName, 'm', sDate, new BufferedImage(1, 1, TYPE_INT_ARGB));
+            ChildDAO.getInstance().insert(c);
+            arrChildren = (ArrayList<Child>) ChildDAO.getInstance().findAll();
+            loadChildrenInTable();
+        } else {
+            showErrorMessage();
+        }
     }
 
     private void saveDonor() {
@@ -393,10 +400,19 @@ public class MainViewController implements Initializable {
         String town = txtLocationDonor.getText();
         String email = txtEmailDonor.getText();
         String phone = txtPhoneNumberDonor.getText();
-        Donor d = new Donor(name, lastName, road, postalCode, town, email, phone);
-        DonorDAO.getInstance().insert(d);
-        arrDonors = (ArrayList<Donor>) DonorDAO.getInstance().findAll();
-        loadDonorsInTable();
+        if (!(name.equals("") || lastName.equals("") || road.equals("") || postalCode.equals("") || town.equals("")
+                || email.equals("") || phone.equals(""))) {
+            Donor d = new Donor(name, lastName, road, postalCode, town, email, phone);
+            DonorDAO.getInstance().insert(d);
+            arrDonors = (ArrayList<Donor>) DonorDAO.getInstance().findAll();
+            loadDonorsInTable();
+        } else {
+            showErrorMessage();
+        }
+    }
+
+    private void showErrorMessage() {
+        JOptionPane.showMessageDialog(null, "Please fill in all required fields.");
     }
 
     private void saveDonationplan() {
@@ -409,10 +425,15 @@ public class MainViewController implements Initializable {
             Date date = Date.from(instant);
             java.sql.Date sDate = convertUtilToSql(date);
             String interval = cmbInterval.getValue();
-            Donationplan d = new Donationplan(amount, donorID, childID, sDate, interval);
-            DonationplanDAO.getInstance().insert(d);
-            arrDonationplans = (ArrayList<Donationplan>) DonationplanDAO.getInstance().findAll();
-            loadDonationplansInTable();
+            System.out.println(amount);
+            if (!(amount == 0 || donorID == 0 || childID == 0)) {
+                Donationplan d = new Donationplan(amount, donorID, childID, sDate, interval);
+                DonationplanDAO.getInstance().insert(d);
+                arrDonationplans = (ArrayList<Donationplan>) DonationplanDAO.getInstance().findAll();
+                loadDonationplansInTable();
+            } else {
+                showErrorMessage();
+            }
         } catch (NumberFormatException e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(null, "Please Enter a valid Amount");
@@ -434,10 +455,16 @@ public class MainViewController implements Initializable {
 
     private void saveUser() {
         java.sql.Date dateCreated = convertUtilToSql(new Date());
-        User u = new User(txtUserLastName.getText(), txtUserName.getText(), "1234", dateCreated, radUserIsAdmin.isSelected());
+        User u = new User(txtUserName.getText(), txtUserLastName.getText(), "1234", dateCreated, radUserIsAdmin.isSelected());
         UserDAO.getInstance().insert(u);
         arrUsers = (ArrayList<User>) UserDAO.getInstance().findAll();
         loadUsersInTable();
+    }
+
+    private void clearTextFields() {
+        for (TextField i : textFields) {
+            i.setText("");
+        }
     }
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
@@ -450,16 +477,7 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void newChild(ActionEvent event) {
-
-    }
-
-    @FXML
     private void chooseImage(ActionEvent event) {
-    }
-
-    @FXML
-    private void newDonor(ActionEvent event) {
     }
 
     @FXML
@@ -566,21 +584,16 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void newDonationPlan(ActionEvent event) {
-    }
-
-    @FXML
     private void logout(ActionEvent event) throws IOException {
         Starter.getInstance().changeScreen("view2", "LoginView", "Login");
     }
 
     @FXML
-    private void addUser(ActionEvent event) {
-
-    }
-
-    @FXML
     private void btnRemoveRights(ActionEvent event) {
+        TablePosition pos = tblUsers.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        User item = tblUsers.getItems().get(row);
+        UserDAO.getInstance().disallowUser(item.getUserID());
     }
 
     @FXML
@@ -591,5 +604,20 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void sendReminder(ActionEvent event) {
+    }
+
+    private void addTextFieldsInArray() {
+        textFields.add(txtAmount);
+        textFields.add(txtEmailDonor);
+        textFields.add(txtLastNameChild);
+        textFields.add(txtLastNameDonor);
+        textFields.add(txtLocationDonor);
+        textFields.add(txtNameChild);
+        textFields.add(txtNameDonor);
+        textFields.add(txtPhoneNumberDonor);
+        textFields.add(txtPostalCodeDonor);
+        textFields.add(txtRoadDonor);
+        textFields.add(txtUserName);
+        textFields.add(txtUserLastName);
     }
 }

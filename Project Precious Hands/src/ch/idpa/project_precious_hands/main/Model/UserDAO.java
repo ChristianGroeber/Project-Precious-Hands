@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,7 +34,7 @@ public class UserDAO implements DAO<User> {
 
     private void usersArray() throws SQLException, FileNotFoundException, ClassNotFoundException {
         Database.getInstance().openConnection("", "");
-        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.userdata;");
+        ResultSet rs = Database.getInstance().getTable("SELECT * FROM preciousdb.userdata WHERE allowed = '1'");
         while (rs.next()) {
             User c = new User(rs.getInt("ID_User"), rs.getString("Name"), rs.getString("LastName"), rs.getDate("DateAdded"), rs.getBoolean("Is_Admin"));
             users.add(c);
@@ -52,14 +54,14 @@ public class UserDAO implements DAO<User> {
     }
 
     public boolean correctValues(String username, String password) throws SQLException, FileNotFoundException, ClassNotFoundException {
-        String query = "SELECT * FROM preciousdb.userdata WHERE Passwort = '" + password + "' AND Name = '" + username + "'";
+        String query = "SELECT * FROM preciousdb.userdata WHERE Passwort = '" + password + "' AND Name = '" + username + "' AND allowed = '1'";
         Database db = Database.getInstance();
         db.openConnection("", "");
         ResultSet rs = Database.getInstance().getTable(query);
         rs.next();
         try {
             System.out.println(rs.getInt("ID_User") + ", " + rs.getBoolean("Is_Admin"));
-            new ShowProgress().showProgress();
+//            new ShowProgress().showProgress();
             loginUser(rs);
             db.closeConnection();
             if (loggedInUser.isAdmin()) {
@@ -150,6 +152,19 @@ public class UserDAO implements DAO<User> {
 
     public void logoutUser() {
         loggedInUser = null;
+    }
+
+    public void disallowUser(int userID) {
+        try {
+            String query = "UPDATE `preciousdb`.`userdata` SET `allowed`='0' WHERE `ID_User`='" + userID + "'";
+            Database db = Database.getInstance();
+            db.openConnection("", "");
+            db.getStatement().execute(query);
+            db.closeConnection();
+        } catch (SQLException | FileNotFoundException | ClassNotFoundException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
