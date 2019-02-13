@@ -44,5 +44,10 @@ public class LoginController implements Initializable {
             new Starter().changeScreen("view2", "MainView", "Precious Hands");
         }
     }
+
+    @FXML
+    private void goToPwField(ActionEvent event) {
+        txtPassword.requestFocus();
+    }
     
 }

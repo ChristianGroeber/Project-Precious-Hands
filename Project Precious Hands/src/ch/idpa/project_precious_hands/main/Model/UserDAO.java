@@ -61,7 +61,7 @@ public class UserDAO implements DAO<User> {
         rs.next();
         try {
             System.out.println(rs.getInt("ID_User") + ", " + rs.getBoolean("Is_Admin"));
-//            new ShowProgress().showProgress();
+            new ShowProgress().showProgress();
             loginUser(rs);
             db.closeConnection();
             if (loggedInUser.isAdmin()) {
