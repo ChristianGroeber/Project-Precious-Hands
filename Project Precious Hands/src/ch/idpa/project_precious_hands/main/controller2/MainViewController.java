@@ -549,7 +549,7 @@ public class MainViewController implements Initializable {
     private void addDonationToDonor(ActionEvent event) {
     }
 
-    @FXML
+    
     private void searchDonor(ActionEvent event) {
         String val = cmbDonors.getValue();
         ArrayList<Donor> newArr = new ArrayList<>();
@@ -566,7 +566,7 @@ public class MainViewController implements Initializable {
         cmbDonors.show();
     }
 
-    @FXML
+    
     private void searchChild(ActionEvent event) {
         String val = cmbChildren.getValue();
         ArrayList<Child> newArr = new ArrayList<>();

@@ -287,12 +287,12 @@
                                                             <Label text="Child" GridPane.rowIndex="3" />
                                                             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                <children>
-                                                                  <ComboBox fx:id="cmbDonors" editable="true" onAction="#searchDonor" prefWidth="150.0" />
+                                                                  <ComboBox fx:id="cmbDonors" prefWidth="150.0" />
                                                                </children>
                                                             </HBox>
                                                             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                <children>
-                                                                  <ComboBox fx:id="cmbChildren" editable="true" onAction="#searchChild" prefWidth="150.0" />
+                                                                  <ComboBox fx:id="cmbChildren" prefWidth="150.0" />
                                                                </children>
                                                             </HBox>
                                                             <Label text="Durance" GridPane.rowIndex="4" />
