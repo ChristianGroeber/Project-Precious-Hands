@@ -16,12 +16,13 @@ import ch.idpa.project_precious_hands.main.Model.Donationplan;
 import ch.idpa.project_precious_hands.main.Model.DonationplanDAO;
 import ch.idpa.project_precious_hands.main.Model.Donor;
 import ch.idpa.project_precious_hands.main.Model.DonorDAO;
+import ch.idpa.project_precious_hands.main.Model.PdfCreator;
 import ch.idpa.project_precious_hands.main.Model.User;
 import ch.idpa.project_precious_hands.main.Model.UserDAO;
 import ch.idpa.project_precious_hands.main.Starter;
+import com.itextpdf.text.*;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -55,6 +56,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javax.swing.JOptionPane;
+import java.io.FileNotFoundException;
 
 /**
  * FXML Controller class
@@ -549,7 +551,6 @@ public class MainViewController implements Initializable {
     private void addDonationToDonor(ActionEvent event) {
     }
 
-    
     private void searchDonor(ActionEvent event) {
         String val = cmbDonors.getValue();
         ArrayList<Donor> newArr = new ArrayList<>();
@@ -566,7 +567,6 @@ public class MainViewController implements Initializable {
         cmbDonors.show();
     }
 
-    
     private void searchChild(ActionEvent event) {
         String val = cmbChildren.getValue();
         ArrayList<Child> newArr = new ArrayList<>();
@@ -603,7 +603,12 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void sendReminder(ActionEvent event) {
+    private void sendReminder(ActionEvent event) throws FileNotFoundException, DocumentException, BadElementException, IOException, ParseException {
+        TablePosition pos = tblDonationplans.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        Donationplan plan = tblDonationplans.getItems().get(row);
+        
+        new PdfCreator().createPdf(plan);
     }
 
     private void addTextFieldsInArray() {
